@@ -8,9 +8,9 @@ datasource db {
 }
 
 model User {
-  id      String   @id
-  email   String   @unique
-  claimed Ticket[]
+  id           String   @id
+  phone_number String   @unique
+  claimed      Ticket[]
 }
 
 model Artist {
