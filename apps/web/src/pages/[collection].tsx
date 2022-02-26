@@ -4,8 +4,10 @@ import {Marker} from 'react-google-maps';
 import {GoogleMap} from '../client/components/map';
 import {collectionSchema} from '../schemas/collection';
 import {prisma} from '../server/prisma';
-import {useEffect, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import {fetcher} from '../client/fetcher';
+import type CollectionAPI from './api/collection/[id]';
+import {InferAPIResponse} from 'nextkit';
 
 interface Props {
 	collection: Collection;
@@ -18,6 +20,25 @@ interface Pos {
 
 export default function CollectionPage(props: Props) {
 	const [usrPos, setUsrPos] = useState<null | Pos>(null);
+	const [ticketsRemaining, setTicketsRemaining] = useState(0);
+
+	const revalidateTicketsRemaining = useCallback(() => {
+		fetcher<InferAPIResponse<typeof CollectionAPI, 'GET'>>(
+			`/api/collection/${props.collection.id}`,
+			{
+				method: 'GET',
+				headers: {'Content-Type': 'application/json'},
+			},
+		)
+			.then(data => {
+				setTicketsRemaining(data.remainingTicketCount);
+			})
+			.catch(() => null);
+	}, [props.collection.id]);
+
+	useEffect(() => {
+		revalidateTicketsRemaining();
+	}, [revalidateTicketsRemaining]);
 
 	useEffect(() => {
 		if (typeof window === 'undefined') {
@@ -65,8 +86,24 @@ export default function CollectionPage(props: Props) {
 							lat: props.collection.latitude,
 							lng: props.collection.longitude,
 						}}
+						label={{
+							text: `${ticketsRemaining} ticket${
+								ticketsRemaining === 1 ? '' : 's'
+							} remaining!`,
+							color: '#ffffff',
+							className: 'ticket-remaining-label',
+						}}
 					/>
-					{usrPos && <Marker position={usrPos} opacity={0.3} />}
+					{usrPos && (
+						<Marker
+							position={usrPos}
+							opacity={0.3}
+							label={{
+								text: 'Your position',
+								color: '#ffffff',
+							}}
+						/>
+					)}
 				</GoogleMap>
 			</div>
 		</div>
