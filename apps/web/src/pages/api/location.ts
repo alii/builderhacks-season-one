@@ -1,24 +1,29 @@
 import {api} from '../../server/api';
 import {z} from 'zod';
 import {locationSchema} from '../../schemas/location';
+import {createMessage, UserGeoLocationMessage} from '../../server/sqs';
+import dayjs from 'dayjs';
+import {NextkitException} from 'nextkit';
 
 export default api({
-	async POST({req}) {
-		const body = sendLocationSchema.parse(req.body);
+	async POST({req, context}) {
+		if (context.userId === null) {
+			throw new NextkitException(401, 'You are not signed in!');
+		}
+
+		const {longitude, latitude} = sendLocationSchema.parse(req.body);
 
 		// Construct this into an SQS message
 		const sqsPayload: UserGeoLocationMessage = {
-			userId: '123123', // TODO: carry through user id,
+			userId: context.userId,
+			longitude,
+			latitude,
+			sentAt: dayjs().toString(),
 		};
+
+		await createMessage(sqsPayload);
 	},
 });
-
-interface UserGeoLocationMessage {
-	userId: string;
-	latitude: number;
-	longitude: number;
-	sentAt: string;
-}
 
 const sendLocationSchema = z.object({
 	longitude: locationSchema.longitude,
