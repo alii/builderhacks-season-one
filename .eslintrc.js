@@ -38,5 +38,7 @@ module.exports = {
 		'@typescript-eslint/quotes': 'off',
 		'react/jsx-curly-newline': 'off',
 		'@typescript-eslint/indent': 'off',
+
+		'@next/next/no-html-link-for-pages': ['error', 'apps/web/src/pages/'],
 	},
 };

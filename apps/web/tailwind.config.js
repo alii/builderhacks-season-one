@@ -10,7 +10,7 @@ module.exports = {
 		extend: {
 			fontFamily: {
 				...defaults.fontFamily,
-				sans: ['Roboto', ...defaults.fontFamily.sans],
+				sans: ['Inter', ...defaults.fontFamily.sans],
 			},
 		},
 	},
