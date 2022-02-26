@@ -23,6 +23,7 @@
 		"react-dom": "17.0.2",
 		"react-google-maps": "^9.4.5",
 		"react-spinners": "^0.11.0",
+		"stripe": "^8.205.0",
 		"swr": "^1.2.2",
 		"zod": "^3.12.0"
 	},
