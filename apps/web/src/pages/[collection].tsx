@@ -2,16 +2,20 @@ import {Collection} from '@prisma/client';
 import {GetStaticPaths, GetStaticProps} from 'next';
 import {collectionSchema} from '../schemas/collection';
 import {prisma} from '../server/prisma';
+import dayjs from 'dayjs';
 
 interface Props {
-	collection: Collection;
+	collection: Collection & {
+		releases_at: string;
+		closes_at: string;
+	};
 }
 
 export default function CollectionPage(props: Props) {
 	return (
 		<div>
 			<h1>Collection</h1>
-			<h2>{props.collection.id}</h2>
+			<h2>{JSON.stringify(props.collection)}</h2>
 		</div>
 	);
 }
@@ -34,7 +38,13 @@ export const getStaticProps: GetStaticProps<
 
 	return {
 		revalidate: 240,
-		props: {collection},
+		props: {
+			collection: {
+				...collection,
+				releases_at: dayjs(collection.releases_at).toISOString(),
+				closes_at: dayjs(collection.closes_at).toISOString(),
+			},
+		},
 	};
 };
 
