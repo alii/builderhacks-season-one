@@ -2,11 +2,9 @@ import {Collection} from '@prisma/client';
 import {GetStaticPaths, GetStaticProps} from 'next';
 import {collectionSchema} from '../schemas/collection';
 import {prisma} from '../server/prisma';
-import dayjs from 'dayjs';
-import {TransformDates} from '../shared/types';
 
 interface Props {
-	collection: TransformDates<Collection>;
+	collection: Collection;
 }
 
 export default function CollectionPage(props: Props) {
@@ -34,21 +32,13 @@ export const getStaticProps: GetStaticProps<
 		};
 	}
 
-	const mapped = {
-		...collection,
-		releases_at: dayjs(collection.releases_at).toISOString(),
-		closes_at: dayjs(collection.closes_at).toISOString(),
-	};
-
 	return {
 		revalidate: 240,
-		props: {
-			collection: mapped,
-		},
+		props: {collection},
 	};
 };
 
 export const getStaticPaths: GetStaticPaths = async () => ({
 	paths: [],
-	fallback: true,
+	fallback: 'blocking',
 });
