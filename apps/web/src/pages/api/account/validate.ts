@@ -5,11 +5,7 @@ import {redis} from '../../../server/redis';
 import {NextkitException} from 'nextkit';
 import {prisma} from '../../../server/prisma';
 import {snowflake} from '../../../server/snowflake';
-import {
-	COOKIE_NAME,
-	createSession,
-	getSessionExpiration,
-} from '../../../server/sessions';
+import {COOKIE_NAME, createSession} from '../../../server/sessions';
 import {serialize} from 'cookie';
 
 export default api({
@@ -39,7 +35,7 @@ export default api({
 			});
 		}
 
-		const token = await createSession(currentUser.id);
+		const [token, expires] = await createSession(currentUser.id);
 
 		res.setHeader(
 			'Set-Cookie',
@@ -47,7 +43,7 @@ export default api({
 				httpOnly: true,
 				secure: process.env.NODE_ENV !== 'development',
 				path: '/',
-				expires: getSessionExpiration().toDate(),
+				expires,
 			}),
 		);
 	},
