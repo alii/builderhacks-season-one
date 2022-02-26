@@ -17,6 +17,7 @@
 		"dayjs": "^1.10.7",
 		"envsafe": "^2.0.3",
 		"ioredis": "^4.28.5",
+		"libphonenumber-js": "^1.9.49",
 		"next": "^12.1.0",
 		"nextkit": "^3.0.4",
 		"react": "17.0.2",
