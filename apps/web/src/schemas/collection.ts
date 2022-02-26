@@ -7,7 +7,3 @@ export const collectionSchema = {
 		.max(18)
 		.regex(/^[a-z0-9-]+$/),
 };
-
-export const userSchema = {
-	email: z.string(),
-};
