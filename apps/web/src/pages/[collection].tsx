@@ -1,5 +1,6 @@
 import {Collection} from '@prisma/client';
 import {GetStaticPaths, GetStaticProps} from 'next';
+import {GoogleMap} from '../client/components/map';
 import {collectionSchema} from '../schemas/collection';
 import {prisma} from '../server/prisma';
 
@@ -10,8 +11,14 @@ interface Props {
 export default function CollectionPage(props: Props) {
 	return (
 		<div>
-			<h1>Collection</h1>
-			<h2>{JSON.stringify(props.collection)}</h2>
+			<div className="h-[80vh]">
+				<GoogleMap
+					center={{
+						lat: props.collection.latitude,
+						lng: props.collection.longitude,
+					}}
+				></GoogleMap>
+			</div>
 		</div>
 	);
 }
