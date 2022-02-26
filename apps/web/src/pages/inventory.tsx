@@ -18,7 +18,7 @@ export default function Inventory() {
 			.catch(() => {
 				void router.push('/auth');
 			});
-	}, []);
+	}, [router]);
 
 	useEffect(() => {
 		revalidateTickets();
