@@ -273,6 +273,7 @@ __metadata:
   dependencies:
     "@types/ioredis": ^4.28.8
     aws-sdk: ^2.1082.0
+    envsafe: ^2.0.3
     ioredis: ^4.28.5
   languageName: unknown
   linkType: soft

@@ -9,5 +9,5 @@ export const collectionSchema = {
 };
 
 export const userSchema = {
-	email: z.string().email(),
+	email: z.string(),
 };
