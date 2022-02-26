@@ -1269,6 +1269,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"envsafe@npm:^2.0.3":
+  version: 2.0.3
+  resolution: "envsafe@npm:2.0.3"
+  checksum: e2a9935d97aebfac6993d0ecaa5e8725d8fd40c2848d7021969cb8c223d4fea5940700c24df1afc7ae56cf5dbefe9d7ec6bff78bb6ec23f993ab4ddaf076b2a1
+  languageName: node
+  linkType: hard
+
 "err-code@npm:^2.0.2":
   version: 2.0.3
   resolution: "err-code@npm:2.0.3"
@@ -1877,6 +1884,7 @@ __metadata:
     "@types/react": ^17.0.39
     "@typescript-eslint/eslint-plugin": ^5.12.1
     "@typescript-eslint/parser": ^5.12.1
+    envsafe: ^2.0.3
     eslint: ^8.10.0
     eslint-config-next: 12.1.0
     eslint-config-xo: ^0.40.0
