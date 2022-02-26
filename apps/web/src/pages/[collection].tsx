@@ -4,11 +4,12 @@ import {Circle, Marker} from 'react-google-maps';
 import {GoogleMap} from '../client/components/map';
 import {collectionSchema} from '../schemas/collection';
 import {prisma} from '../server/prisma';
-import {useCallback, useEffect, useState} from 'react';
+import {useCallback, useEffect, useRef, useState} from 'react';
 import {fetcher} from '../client/fetcher';
 import type CollectionAPI from './api/collection/[id]';
 import {InferAPIResponse} from 'nextkit';
 import colors from 'tailwindcss/colors';
+import {io, Socket} from 'socket.io-client';
 
 interface Props {
 	collection: Collection;
@@ -20,9 +21,12 @@ interface Pos {
 }
 
 export default function CollectionPage(props: Props) {
+	const socketRef = useRef<Socket>(io(`http://localhost:8081`));
+
 	const [usrPos, setUsrPos] = useState<null | Pos>(null);
 	const [ticketsRemaining, setTicketsRemaining] = useState(0);
 	const [distance, setDistance] = useState(-1);
+	const [hasTicket, setHasTicket] = useState(false);
 
 	const revalidateTicketsRemaining = useCallback(() => {
 		fetcher<InferAPIResponse<typeof CollectionAPI, 'GET'>>(
@@ -30,9 +34,38 @@ export default function CollectionPage(props: Props) {
 		)
 			.then(data => {
 				setTicketsRemaining(data.remainingTicketCount);
+				setHasTicket(data.hasTicket);
 			})
 			.catch(() => null);
 	}, [props.collection.id]);
+
+	useEffect(() => {
+		if (typeof window === 'undefined') {
+			return;
+		}
+
+		socketRef.current.on('request-authentication', () => {
+			socketRef.current.emit('authentication', {
+				token: window.localStorage.getItem('realtime-token'),
+			});
+
+			socketRef.current.on('authentication-completed', () => {
+				socketRef.current.emit('subscribe-collection', {
+					collectionId: props.collection.id,
+				});
+			});
+
+			socketRef.current.on(
+				'ticket-claimed',
+				({collectionId}: {collectionId: string}) => {
+					console.log('received ticket claimed update');
+					if (collectionId === props.collection.id) {
+						revalidateTicketsRemaining();
+					}
+				},
+			);
+		});
+	}, [props.collection.id, revalidateTicketsRemaining]);
 
 	useEffect(() => {
 		revalidateTicketsRemaining();
@@ -93,7 +126,10 @@ export default function CollectionPage(props: Props) {
 
 	return (
 		<div>
-			<h1>Distance: {distance === -1 ? 'Loading...' : `${distance}m`}</h1>
+			<h1>
+				Distance: {distance === -1 ? 'Loading...' : `${distance}m`} -{' '}
+				{hasTicket ? 'YOU HAVE A TICKET!!!' : 'You do not have a ticket yet :('}
+			</h1>
 			<div className="h-[80vh]">
 				<GoogleMap
 					key={`gmap-${props.collection.id}`}
