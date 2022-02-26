@@ -46,6 +46,10 @@ export default api({
 				expires,
 			}),
 		);
+
+		return {
+			paid: currentUser.paid,
+		};
 	},
 });
 

@@ -302,6 +302,7 @@ __metadata:
     react-dom: 17.0.2
     react-google-maps: ^9.4.5
     react-spinners: ^0.11.0
+    stripe: ^8.205.0
     swr: ^1.2.2
     tailwindcss: ^3.0.23
     zod: ^3.12.0
@@ -575,7 +576,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:^17.0.21":
+"@types/node@npm:*, @types/node@npm:>=8.1.0, @types/node@npm:^17.0.21":
   version: 17.0.21
   resolution: "@types/node@npm:17.0.21"
   checksum: 89dcd2fe82f21d3634266f8384e9c865cf8af49685639fbdbd799bdd1040480fb1e8eeda2d3b9fce41edbe704d2a4be9f427118c4ae872e8d9bb7cbeb3c41a94
@@ -3875,6 +3876,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"qs@npm:^6.6.0":
+  version: 6.10.3
+  resolution: "qs@npm:6.10.3"
+  dependencies:
+    side-channel: ^1.0.4
+  checksum: 0fac5e6c7191d0295a96d0e83c851aeb015df7e990e4d3b093897d3ac6c94e555dbd0a599739c84d7fa46d7fee282d94ba76943983935cf33bba6769539b8019
+  languageName: node
+  linkType: hard
+
 "querystring@npm:0.2.0":
   version: 0.2.0
   resolution: "querystring@npm:0.2.0"
@@ -4419,6 +4429,16 @@ __metadata:
   version: 3.1.1
   resolution: "strip-json-comments@npm:3.1.1"
   checksum: 492f73e27268f9b1c122733f28ecb0e7e8d8a531a6662efbd08e22cccb3f9475e90a1b82cab06a392f6afae6d2de636f977e231296400d0ec5304ba70f166443
+  languageName: node
+  linkType: hard
+
+"stripe@npm:^8.205.0":
+  version: 8.205.0
+  resolution: "stripe@npm:8.205.0"
+  dependencies:
+    "@types/node": ">=8.1.0"
+    qs: ^6.6.0
+  checksum: 12189137b2c18f9a7ce5ff6db8a2426949206d737908bc377d81f269862a2cd6bd23923bd9c0f5f247ab681cba601645963bb9874d62e45fec400cffb2da1f48
   languageName: node
   linkType: hard
 
