@@ -20,7 +20,11 @@ export interface Props extends GoogleMapProps {
 export const ComposableGoogleMap = withScriptjs(
 	withGoogleMap<Props>(props => (
 		<GMap
+			defaultZoom={5}
+			defaultCenter={{lat: -34.397, lng: 150.644}}
+			{...props}
 			options={{
+				...props.options,
 				backgroundColor: '#333333',
 				disableDefaultUI: true,
 				styles: [
@@ -311,9 +315,6 @@ export const ComposableGoogleMap = withScriptjs(
 					},
 				],
 			}}
-			defaultZoom={14}
-			defaultCenter={{lat: -34.397, lng: 150.644}}
-			{...props}
 		>
 			{props.children}
 		</GMap>

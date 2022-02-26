@@ -1,6 +1,6 @@
 import {Collection} from '@prisma/client';
 import {GetStaticPaths, GetStaticProps} from 'next';
-import {Marker} from 'react-google-maps';
+import {Circle, Marker} from 'react-google-maps';
 import {GoogleMap} from '../client/components/map';
 import {collectionSchema} from '../schemas/collection';
 import {prisma} from '../server/prisma';
@@ -8,6 +8,7 @@ import {useCallback, useEffect, useState} from 'react';
 import {fetcher} from '../client/fetcher';
 import type CollectionAPI from './api/collection/[id]';
 import {InferAPIResponse} from 'nextkit';
+import colors from 'tailwindcss/colors';
 
 interface Props {
 	collection: Collection;
@@ -76,6 +77,11 @@ export default function CollectionPage(props: Props) {
 			<div className="h-[100vh]">
 				<GoogleMap
 					key={`gmap-${props.collection.id}`}
+					options={{
+						minZoom: 15,
+						maxZoom: 18,
+					}}
+					zoom={18}
 					center={{
 						lat: props.collection.latitude,
 						lng: props.collection.longitude,
@@ -95,12 +101,12 @@ export default function CollectionPage(props: Props) {
 						}}
 					/>
 					{usrPos && (
-						<Marker
-							position={usrPos}
-							opacity={0.3}
-							label={{
-								text: 'Your position',
-								color: '#ffffff',
+						<Circle
+							center={usrPos}
+							options={{
+								strokeColor: colors.indigo[500],
+								fillColor: colors.indigo[500],
+								radius: 5,
 							}}
 						/>
 					)}

@@ -18,6 +18,7 @@ export default api({
 
 		// Check the auth code in redis
 		const redisEntry = await redis.get(`authcode:${phone.number}`);
+
 		if (!redisEntry || redisEntry.trim() !== authCode.trim()) {
 			throw new NextkitException(422, 'Unable to find that code!');
 		}
@@ -53,6 +54,10 @@ export default api({
 
 		// Send pack the realtime status
 		const realtimeToken = await createRealtimeSession(currentUser.id);
+
+		// Delete used 2fa code
+		await redis.del(`authcode:${phone.number}`);
+
 		return {
 			paid: currentUser.paid,
 			realtimeToken,
