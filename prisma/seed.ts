@@ -43,8 +43,8 @@ async function run() {
 				id: snowflake(),
 				slug: id(),
 				name: faker.company.companyName(),
-				latitude: 51.748465, // 51.748465, -1.974616
-				longitude: -1.974616,
+				latitude: 51.892321, // 51.892321, -2.076927
+				longitude: -2.076927,
 				releases_at: dayjs().subtract(1, 'hour').toDate(),
 				closes_at: dayjs().add(1, 'day').toDate(),
 				artist_id:
