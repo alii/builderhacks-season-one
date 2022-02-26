@@ -5,9 +5,9 @@
 		"./apps/*"
 	],
 	"scripts": {
-		"dev": "yarn workspace @geogig/web dev",
 		"lint": "eslint './apps/**/*.{ts,tsx}'",
-		"build": "yarn workspace @geogig/web build"
+		"build": "yarn workspace @geogig/web build",
+		"web:dev": "yarn workspace @geogig/web dev"
 	},
 	"prisma": {
 		"seed": "node --loader ts-node/esm prisma/seed.ts"
