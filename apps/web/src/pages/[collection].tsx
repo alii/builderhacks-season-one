@@ -1,4 +1,4 @@
-import {Collection} from '@prisma/client';
+import {Artist, Collection} from '@prisma/client';
 import {GetStaticPaths, GetStaticProps} from 'next';
 import {Circle, Marker} from 'react-google-maps';
 import {GoogleMap} from '../client/components/map';
@@ -10,9 +10,15 @@ import type CollectionAPI from './api/collection/[id]';
 import {InferAPIResponse} from 'nextkit';
 import colors from 'tailwindcss/colors';
 import {io} from 'socket.io-client';
+import {FaCheckCircle} from 'react-icons/fa';
+import {HashLoader} from 'react-spinners';
+import {useThrottle} from 'alistair/hooks';
+import clsx from 'clsx';
 
 interface Props {
-	collection: Collection;
+	collection: Collection & {
+		artist: Artist;
+	};
 }
 
 interface Pos {
@@ -25,8 +31,10 @@ export default function CollectionPage(props: Props) {
 
 	const [usrPos, setUsrPos] = useState<null | Pos>(null);
 	const [ticketsRemaining, setTicketsRemaining] = useState(0);
-	const [distance, setDistance] = useState(-1);
+	const [_distance, setDistance] = useState(-1);
 	const [hasTicket, setHasTicket] = useState(false);
+
+	const distance = useThrottle(_distance, 1000);
 
 	const revalidateTicketsRemaining = useCallback(() => {
 		fetcher<InferAPIResponse<typeof CollectionAPI, 'GET'>>(
@@ -123,18 +131,75 @@ export default function CollectionPage(props: Props) {
 
 	return (
 		<div>
-			<h1>
-				Distance: {distance === -1 ? 'Loading...' : `${distance}m`} -{' '}
-				{hasTicket ? 'YOU HAVE A TICKET!!!' : 'You do not have a ticket yet :('}
-			</h1>
-			<div className="h-[80vh]">
+			<div className="h-[calc(100vh-4rem)] relative">
+				<div
+					className={clsx(
+						'absolute space-y-2 left-12 top-12 z-10 rounded-md p-7',
+						hasTicket
+							? 'bg-gradient-to-r from-green-500 to-green-600'
+							: 'bg-white',
+					)}
+				>
+					{distance === -1 ? (
+						<div className="p-7">
+							<HashLoader />
+						</div>
+					) : (
+						<>
+							<h1 className="text-4xl font-bold tracking-tighter">
+								{hasTicket ? (
+									<>
+										<FaCheckCircle className="inline -mt-1" />{' '}
+										{props.collection.artist.name}
+									</>
+								) : (
+									<>
+										{distance === -1
+											? 'Loading...'
+											: `${Math.trunc(distance)}m`}
+										&nbsp;
+										<span className="text-black/50">distance</span>
+									</>
+								)}{' '}
+							</h1>
+
+							<p>
+								{hasTicket ? (
+									`We've reserved your ticket for ${props.collection.artist.name}`
+								) : (
+									<>
+										You{' '}
+										<span className="text-red-500 font-semibold">
+											have not claimed
+										</span>{' '}
+										a ticket!
+									</>
+								)}
+							</p>
+
+							{distance !== -1 &&
+								distance < 150 &&
+								ticketsRemaining > 0 &&
+								!hasTicket && (
+									<button
+										type="button"
+										onClick={async () => attemptTicketClaim()}
+									>
+										You're close enough - Attempt Ticket Claim
+									</button>
+								)}
+						</>
+					)}
+				</div>
+
 				<GoogleMap
 					key={`gmap-${props.collection.id}`}
 					options={{
-						minZoom: 15,
 						maxZoom: 18,
+						scrollwheel: true,
+						panControl: false,
 					}}
-					zoom={18}
+					zoom={17}
 					center={{
 						lat: props.collection.latitude,
 						lng: props.collection.longitude,
@@ -146,9 +211,9 @@ export default function CollectionPage(props: Props) {
 							lng: props.collection.longitude,
 						}}
 						options={{
-							strokeColor: colors.orange[500],
+							strokeColor: colors.neutral[500],
 							strokeOpacity: 0.3,
-							fillColor: colors.orange[500],
+							fillColor: colors.neutral[500],
 							fillOpacity: 0.1,
 						}}
 						radius={150}
@@ -159,12 +224,17 @@ export default function CollectionPage(props: Props) {
 							lat: props.collection.latitude,
 							lng: props.collection.longitude,
 						}}
+						options={{
+							icon: '/',
+						}}
 						label={{
+							fontFamily: 'Roboto, sans-serif',
 							text: `${ticketsRemaining} ticket${
 								ticketsRemaining === 1 ? '' : 's'
 							} remaining!`,
-							color: '#ffffff',
-							className: 'ticket-remaining-label',
+							color: colors.white,
+							className:
+								'ticket-remaining-label rounded-md bg-neutral-500/75 py-2 px-3',
 						}}
 					/>
 
@@ -180,11 +250,6 @@ export default function CollectionPage(props: Props) {
 					)}
 				</GoogleMap>
 			</div>
-			{distance !== -1 && distance < 150 && ticketsRemaining > 0 && !hasTicket && (
-				<button type="button" onClick={async () => attemptTicketClaim()}>
-					You're close enough - Attempt Ticket Claim
-				</button>
-			)}
 		</div>
 	);
 }
@@ -196,6 +261,9 @@ export const getStaticProps: GetStaticProps<
 	const collection = await prisma.collection.findFirst({
 		where: {
 			slug: collectionSchema.slug.parse(ctx.params?.collection),
+		},
+		include: {
+			artist: true,
 		},
 	});
 

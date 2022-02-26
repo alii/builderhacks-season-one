@@ -1,6 +1,7 @@
 /* eslint-disable unicorn/prefer-module */
 
 const defaults = require('tailwindcss/defaultTheme');
+const colors = require('tailwindcss/colors');
 
 /** @type {import("tailwindcss/tailwind-config").TailwindConfig } */
 module.exports = {
@@ -13,6 +14,8 @@ module.exports = {
 				sans: ['Inter', ...defaults.fontFamily.sans],
 			},
 		},
+
+		colors,
 	},
 	plugins: [require('@tailwindcss/forms')],
 };
