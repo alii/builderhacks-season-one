@@ -8,7 +8,7 @@ export const COOKIE_NAME = 'token';
 
 enum TokenPrefix {
 	USER = 'token',
-	REALTIME = 'realtime',
+	REALTIME = 'realtime-token',
 }
 
 /**
