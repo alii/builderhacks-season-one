@@ -31,10 +31,6 @@ export default function CollectionPage(props: Props) {
 	const revalidateTicketsRemaining = useCallback(() => {
 		fetcher<InferAPIResponse<typeof CollectionAPI, 'GET'>>(
 			`/api/collection/${props.collection.id}`,
-			{
-				method: 'GET',
-				headers: {'Content-Type': 'application/json'},
-			},
 		)
 			.then(data => {
 				setTicketsRemaining(data.remainingTicketCount);
@@ -96,21 +92,17 @@ export default function CollectionPage(props: Props) {
 			return;
 		}
 
-		// Calculate the distance between the two
-		const lat1 = usrPos.lat;
-		const lat2 = props.collection.latitude;
-		const lon1 = usrPos.lng;
-		const lon2 = props.collection.longitude;
-
+		// Calculate the distance between the two points
 		const R = 6371e3;
-		const φ1 = (lat1 * Math.PI) / 180;
-		const φ2 = (lat2 * Math.PI) / 180;
-		const Δφ = ((lat2 - lat1) * Math.PI) / 180;
-		const Δλ = ((lon2 - lon1) * Math.PI) / 180;
+		const φ1 = (usrPos.lat * Math.PI) / 180;
+		const φ2 = (props.collection.latitude * Math.PI) / 180;
+		const Δφ = ((props.collection.latitude - usrPos.lat) * Math.PI) / 180;
+		const Δλ = ((props.collection.longitude - usrPos.lng) * Math.PI) / 180;
 
 		const a =
 			Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
 			Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+
 		const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 		const d = R * c;
 
@@ -151,6 +143,20 @@ export default function CollectionPage(props: Props) {
 						lng: props.collection.longitude,
 					}}
 				>
+					<Circle
+						center={{
+							lat: props.collection.latitude,
+							lng: props.collection.longitude,
+						}}
+						options={{
+							strokeColor: colors.orange[500],
+							strokeOpacity: 0.3,
+							fillColor: colors.orange[500],
+							fillOpacity: 0.1,
+						}}
+						radius={150}
+					/>
+
 					<Marker
 						position={{
 							lat: props.collection.latitude,
@@ -164,6 +170,7 @@ export default function CollectionPage(props: Props) {
 							className: 'ticket-remaining-label',
 						}}
 					/>
+
 					{usrPos && (
 						<Circle
 							center={usrPos}
