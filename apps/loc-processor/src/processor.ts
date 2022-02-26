@@ -10,9 +10,10 @@ export async function processMessage(message: UserGeoLocationMessage) {
 		Array<{
 			id: string;
 			distance: number;
+			collection_id: string;
 		}>
 	>`
-		SELECT "Ticket".id, distance FROM "Ticket"
+		SELECT "Ticket".id, distance, "Ticket".collection_id FROM "Ticket"
 			INNER JOIN "Collection" C on C.id = "Ticket".collection_id
 			LEFT JOIN LATERAL (
 				SELECT ( 3959 * acos( cos( radians(latitude) ) * cos( radians( ${message.latitude} ) ) * cos( radians( ${message.longitude} ) - radians(longitude) )
@@ -52,6 +53,7 @@ export async function processMessage(message: UserGeoLocationMessage) {
 			JSON.stringify({
 				userId: message.userId,
 				ticketId: ticketData.id,
+				collectionId: ticketData.collection_id,
 			}),
 		);
 	}

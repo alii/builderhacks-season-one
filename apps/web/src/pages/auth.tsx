@@ -2,6 +2,7 @@ import {InferAPIResponse} from 'nextkit';
 import {useState} from 'react';
 import {fetcher} from '../client/fetcher';
 import type Account from '../pages/api/account';
+import type AccountValidate from '../pages/api/account/validate';
 import toast from 'react-hot-toast';
 import {NextkitClientException} from 'nextkit/client';
 
@@ -56,22 +57,30 @@ export default function AuthPage() {
 					onSubmit={async e => {
 						e.preventDefault();
 
-						const promise = fetcher<InferAPIResponse<typeof Account, 'POST'>>(
-							'/api/account/validate',
-							{
-								method: 'POST',
-								headers: {'Content-Type': 'application/json'},
-								body: JSON.stringify({phone, authCode}),
-							},
-						);
+						const promise = fetcher<
+							InferAPIResponse<typeof AccountValidate, 'POST'>
+						>('/api/account/validate', {
+							method: 'POST',
+							headers: {'Content-Type': 'application/json'},
+							body: JSON.stringify({phone, authCode}),
+						});
 
-						await toast
+						const res = await toast
 							.promise(promise, {
 								success: "BOOOM you're logged in baby!",
 								loading: 'Checking...',
 								error: (e: NextkitClientException) => `${e.code}: ${e.message}`,
 							})
 							.catch(() => null);
+
+						if (res) {
+							console.log('setting local token');
+							window.localStorage.setItem('realtime-token', res.realtimeToken);
+
+							if (!res.paid) {
+								// Trigger payments flow
+							}
+						}
 					}}
 				>
 					<label>
