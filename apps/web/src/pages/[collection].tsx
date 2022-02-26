@@ -4,12 +4,12 @@ import {Circle, Marker} from 'react-google-maps';
 import {GoogleMap} from '../client/components/map';
 import {collectionSchema} from '../schemas/collection';
 import {prisma} from '../server/prisma';
-import {useCallback, useEffect, useRef, useState} from 'react';
+import {useCallback, useEffect, useMemo, useState} from 'react';
 import {fetcher} from '../client/fetcher';
 import type CollectionAPI from './api/collection/[id]';
 import {InferAPIResponse} from 'nextkit';
 import colors from 'tailwindcss/colors';
-import {io, Socket} from 'socket.io-client';
+import {io} from 'socket.io-client';
 
 interface Props {
 	collection: Collection;
@@ -21,7 +21,7 @@ interface Pos {
 }
 
 export default function CollectionPage(props: Props) {
-	const socketRef = useRef<Socket>(io(`http://localhost:8081`));
+	const socket = useMemo(() => io(`http://localhost:8081`), []);
 
 	const [usrPos, setUsrPos] = useState<null | Pos>(null);
 	const [ticketsRemaining, setTicketsRemaining] = useState(0);
@@ -44,28 +44,25 @@ export default function CollectionPage(props: Props) {
 			return;
 		}
 
-		socketRef.current.on('request-authentication', () => {
-			socketRef.current.emit('authentication', {
+		socket.on('request-authentication', () => {
+			socket.emit('authentication', {
 				token: window.localStorage.getItem('realtime-token'),
 			});
 
-			socketRef.current.on('authentication-completed', () => {
-				socketRef.current.emit('subscribe-collection', {
+			socket.on('authentication-completed', () => {
+				socket.emit('subscribe-collection', {
 					collectionId: props.collection.id,
 				});
 			});
 
-			socketRef.current.on(
-				'ticket-claimed',
-				({collectionId}: {collectionId: string}) => {
-					console.log('received ticket claimed update');
-					if (collectionId === props.collection.id) {
-						revalidateTicketsRemaining();
-					}
-				},
-			);
+			socket.on('ticket-claimed', ({collectionId}: {collectionId: string}) => {
+				console.log('received ticket claimed update');
+				if (collectionId === props.collection.id) {
+					revalidateTicketsRemaining();
+				}
+			});
 		});
-	}, [props.collection.id, revalidateTicketsRemaining]);
+	}, [props.collection.id, revalidateTicketsRemaining, socket]);
 
 	useEffect(() => {
 		revalidateTicketsRemaining();
