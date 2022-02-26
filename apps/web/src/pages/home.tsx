@@ -4,12 +4,20 @@ import {useCallback, useEffect, useState} from 'react';
 import {fetcher} from '../client/fetcher';
 import {useRouter} from 'next/router';
 import dayjs from 'dayjs';
+import {usePaid} from '../client/hooks/usePaid';
 
 type CollectionResponse = InferAPIResponse<typeof CollectionListAPI, 'GET'>;
 
 export default function Home() {
 	const [collections, setCollections] = useState<CollectionResponse>([]);
 	const router = useRouter();
+	const paidState = usePaid();
+
+	useEffect(() => {
+		if (paidState === 'not_paid') {
+			void router.push('/pay');
+		}
+	}, [paidState, router]);
 
 	const revalidateCollections = useCallback(() => {
 		fetcher<CollectionResponse>(`/api/collection`)
