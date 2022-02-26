@@ -12,11 +12,18 @@ model User {
   email String @unique
 }
 
+model Artist {
+
+  name String
+}
+
 model Ticket {
   id            String     @id
   title         String
   collection    Collection @relation(fields: [collection_id], references: [id])
   collection_id String
+  claimee       User? @relation(fields: [user_id], references[id])
+  claimee_id    String?
 }
 
 model Collection {
