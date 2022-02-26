@@ -1,5 +1,5 @@
 import aws from 'aws-sdk';
-import {env} from './constants';
+import {env} from './env';
 
 const SQS = new aws.SQS({
 	credentials: {
