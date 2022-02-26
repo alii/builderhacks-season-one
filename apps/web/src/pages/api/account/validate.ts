@@ -47,9 +47,7 @@ export default api({
 			}),
 		);
 
-		return {
-			paid: currentUser.paid,
-		};
+		return currentUser.paid;
 	},
 });
 

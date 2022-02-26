@@ -1,8 +1,8 @@
-import {api} from '../../server/api';
-import {userSchema} from '../../schemas/user';
+import {api} from '../../../server/api';
+import {userSchema} from '../../../schemas/user';
 import {z} from 'zod';
 import {id} from 'alistair/id';
-import {redis} from '../../server/redis';
+import {redis} from '../../../server/redis';
 
 export default api({
 	async POST({req}) {
