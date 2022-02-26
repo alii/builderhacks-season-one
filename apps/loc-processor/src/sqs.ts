@@ -1,22 +1,17 @@
 import aws from 'aws-sdk';
-import {
-	AWS_ACCESS_KEY_ID,
-	AWS_REGION,
-	AWS_SECRET_ACCESS_KEY,
-	SQS_URL,
-} from './constants';
+import {env} from './constants';
 
 const SQS = new aws.SQS({
 	credentials: {
-		accessKeyId: AWS_ACCESS_KEY_ID,
-		secretAccessKey: AWS_SECRET_ACCESS_KEY,
+		accessKeyId: env.AWS_ACCESS_KEY_ID,
+		secretAccessKey: env.AWS_SECRET_ACCESS_KEY,
 	},
-	region: AWS_REGION,
+	region: env.AWS_REGION,
 });
 
 export async function getMessage(): Promise<aws.SQS.Message> {
 	const messages = await SQS.receiveMessage({
-		QueueUrl: SQS_URL,
+		QueueUrl: env.SQS_URL,
 		WaitTimeSeconds: 20,
 		MaxNumberOfMessages: 1,
 	}).promise();
@@ -36,7 +31,7 @@ export async function markMessageComplete(message: aws.SQS.Message) {
 	}
 
 	await SQS.deleteMessage({
-		QueueUrl: SQS_URL,
+		QueueUrl: env.SQS_URL,
 		ReceiptHandle,
 	}).promise();
 }
