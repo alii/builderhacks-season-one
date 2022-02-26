@@ -1,15 +1,14 @@
 import {envsafe, str} from 'envsafe';
 
 export const env = envsafe({
-	DISCORD_CLIENT_ID: str({
-		desc: 'Discord client ID',
+	REDIS_URL: str({
+		desc: 'Redis connection string',
 	}),
 
-	DISCORD_BOT_TOKEN: str({
-		desc: 'Discord bot token',
-	}),
-
-	DISCORD_CLIENT_SECRET: str({
-		desc: 'Discord client secret',
+	// Not actually needed inside the app,
+	// but useful to force it to exist
+	DATABASE_URL: str({
+		desc: 'Database connection string',
+		devDefault: 'postgres://postgres:postgres@localhost:5432/postgres',
 	}),
 });
