@@ -11,6 +11,7 @@ model User {
   id           String   @id
   phone_number String   @unique
   claimed      Ticket[]
+  paid         Boolean  @default(false)
 }
 
 model Artist {
