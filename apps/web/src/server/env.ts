@@ -11,4 +11,9 @@ export const env = envsafe({
 		desc: 'Database connection string',
 		devDefault: 'postgres://postgres:postgres@localhost:5432/postgres',
 	}),
+
+	AWS_REGION: str(),
+	AWS_ACCESS_KEY_ID: str(),
+	AWS_SECRET_ACCESS_KEY: str(),
+	SQS_URL: str(),
 });
