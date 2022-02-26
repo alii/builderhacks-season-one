@@ -9,5 +9,3 @@ export const env = envsafe({
 	SQS_URL: str(),
 	REDIS_URL: str(),
 });
-
-console.log(env);
