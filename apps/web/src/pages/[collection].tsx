@@ -22,6 +22,7 @@ interface Pos {
 export default function CollectionPage(props: Props) {
 	const [usrPos, setUsrPos] = useState<null | Pos>(null);
 	const [ticketsRemaining, setTicketsRemaining] = useState(0);
+	const [distance, setDistance] = useState(-1);
 
 	const revalidateTicketsRemaining = useCallback(() => {
 		fetcher<InferAPIResponse<typeof CollectionAPI, 'GET'>>(
@@ -62,6 +63,32 @@ export default function CollectionPage(props: Props) {
 			return;
 		}
 
+		// Calculate the distance between the two
+		const lat1 = usrPos.lat;
+		const lat2 = props.collection.latitude;
+		const lon1 = usrPos.lng;
+		const lon2 = props.collection.longitude;
+
+		const R = 6371e3;
+		const φ1 = (lat1 * Math.PI) / 180;
+		const φ2 = (lat2 * Math.PI) / 180;
+		const Δφ = ((lat2 - lat1) * Math.PI) / 180;
+		const Δλ = ((lon2 - lon1) * Math.PI) / 180;
+
+		const a =
+			Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+			Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+		const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+		const d = R * c;
+
+		setDistance(d);
+	}, [usrPos, props.collection]);
+
+	async function attemptTicketClaim() {
+		if (!usrPos) {
+			return;
+		}
+
 		// Emit the user pos to the server
 		console.log('emitting ', usrPos);
 
@@ -70,11 +97,12 @@ export default function CollectionPage(props: Props) {
 			headers: {'Content-Type': 'application/json'},
 			body: JSON.stringify({longitude: usrPos.lng, latitude: usrPos.lat}),
 		});
-	}, [usrPos]);
+	}
 
 	return (
 		<div>
-			<div className="h-[100vh]">
+			<h1>Distance: {distance === -1 ? 'Loading...' : `${distance}m`}</h1>
+			<div className="h-[80vh]">
 				<GoogleMap
 					key={`gmap-${props.collection.id}`}
 					options={{
@@ -112,6 +140,11 @@ export default function CollectionPage(props: Props) {
 					)}
 				</GoogleMap>
 			</div>
+			{distance !== -1 && distance < 1000 && ticketsRemaining > 0 && (
+				<button type="button" onClick={async () => attemptTicketClaim()}>
+					You're close enough - Attempt Ticket Claim
+				</button>
+			)}
 		</div>
 	);
 }
