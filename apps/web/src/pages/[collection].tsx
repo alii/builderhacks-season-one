@@ -181,28 +181,26 @@ export default function CollectionPage(props: Props) {
 								)}
 							</p>
 
-							{distance !== -1 &&
-							withinRange &&
-							ticketsRemaining > 0 &&
-							!hasTicket ? (
-								<button
-									type="button"
-									className="bg-green-500/25 border border-green-500/50 w-full flex justify-between items-center text-left py-2 px-3 rounded-md text-black/75 font-semibold text-sm"
-									onClick={attemptTicketClaim}
-								>
-									<span>Reserve Ticket</span>
-									<HiOutlineTicket className="inline-block" />
-								</button>
-							) : (
-								<button
-									disabled
-									type="button"
-									className="cursor-not-allowed bg-red-500/25 border border-red-500/50 w-full flex justify-between items-center text-left py-2 px-3 rounded-md text-black/75 font-semibold text-sm"
-								>
-									<span>Too far!</span>
-									<HiOutlineTicket className="inline-block" />
-								</button>
-							)}
+							{!hasTicket &&
+								(distance !== -1 && withinRange && ticketsRemaining > 0 ? (
+									<button
+										type="button"
+										className="bg-green-500/25 border border-green-500/50 w-full flex justify-between items-center text-left py-2 px-3 rounded-md text-black/75 font-semibold text-sm"
+										onClick={attemptTicketClaim}
+									>
+										<span>Reserve Ticket</span>
+										<HiOutlineTicket className="inline-block" />
+									</button>
+								) : (
+									<button
+										disabled
+										type="button"
+										className="cursor-not-allowed bg-red-500/25 border border-red-500/50 w-full flex justify-between items-center text-left py-2 px-3 rounded-md text-black/75 font-semibold text-sm"
+									>
+										<span>Too far!</span>
+										<HiOutlineTicket className="inline-block" />
+									</button>
+								))}
 						</motion.div>
 					)}
 				</AnimatePresence>
