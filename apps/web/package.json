@@ -15,6 +15,7 @@
 		"cookie": "^0.4.2",
 		"dayjs": "^1.10.7",
 		"envsafe": "^2.0.3",
+		"framer-motion": "^6.2.8",
 		"ioredis": "^4.28.5",
 		"libphonenumber-js": "^1.9.49",
 		"next": "^12.1.0",

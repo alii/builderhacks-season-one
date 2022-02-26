@@ -11,9 +11,12 @@ import {InferAPIResponse} from 'nextkit';
 import colors from 'tailwindcss/colors';
 import {io} from 'socket.io-client';
 import {FaCheckCircle} from 'react-icons/fa';
-import {HashLoader} from 'react-spinners';
+import {FiXCircle} from 'react-icons/fi';
 import {useThrottle} from 'alistair/hooks';
 import clsx from 'clsx';
+import {motion, AnimatePresence} from 'framer-motion';
+import {humanizeDistanceString} from '../shared/util/distance';
+import {HiOutlineTicket} from 'react-icons/hi';
 
 interface Props {
 	collection: Collection & {
@@ -34,7 +37,7 @@ export default function CollectionPage(props: Props) {
 	const [_distance, setDistance] = useState(-1);
 	const [hasTicket, setHasTicket] = useState(false);
 
-	const distance = useThrottle(_distance, 1000);
+	const distance = useThrottle(_distance, 500);
 
 	const revalidateTicketsRemaining = useCallback(() => {
 		fetcher<InferAPIResponse<typeof CollectionAPI, 'GET'>>(
@@ -114,7 +117,7 @@ export default function CollectionPage(props: Props) {
 		setDistance(d);
 	}, [usrPos, props.collection]);
 
-	async function attemptTicketClaim() {
+	const attemptTicketClaim = () => {
 		if (!usrPos) {
 			return;
 		}
@@ -127,25 +130,25 @@ export default function CollectionPage(props: Props) {
 			headers: {'Content-Type': 'application/json'},
 			body: JSON.stringify({longitude: usrPos.lng, latitude: usrPos.lat}),
 		});
-	}
+	};
+
+	const withinRange = distance <= 150;
 
 	return (
 		<div>
 			<div className="h-[calc(100vh-4rem)] relative">
-				<div
-					className={clsx(
-						'absolute space-y-2 left-12 top-12 z-10 rounded-md p-7',
-						hasTicket
-							? 'bg-gradient-to-r from-green-500 to-green-600'
-							: 'bg-white',
-					)}
-				>
-					{distance === -1 ? (
-						<div className="p-7">
-							<HashLoader />
-						</div>
-					) : (
-						<>
+				<AnimatePresence>
+					{distance !== -1 && (
+						<motion.div
+							initial={{opacity: 0}}
+							animate={{opacity: 1}}
+							className={clsx(
+								'absolute space-y-2 left-12 top-12 z-10 rounded-md p-7',
+								hasTicket
+									? 'bg-gradient-to-r from-green-500 to-green-600'
+									: 'bg-white',
+							)}
+						>
 							<h1 className="text-4xl font-bold tracking-tighter">
 								{hasTicket ? (
 									<>
@@ -154,11 +157,12 @@ export default function CollectionPage(props: Props) {
 									</>
 								) : (
 									<>
+										<FiXCircle className="inline -mt-1" />{' '}
 										{distance === -1
 											? 'Loading...'
-											: `${Math.trunc(distance)}m`}
+											: `${humanizeDistanceString(distance)}`}
 										&nbsp;
-										<span className="text-black/50">distance</span>
+										<span className="text-black/50">away</span>
 									</>
 								)}{' '}
 							</h1>
@@ -170,7 +174,7 @@ export default function CollectionPage(props: Props) {
 									<>
 										You{' '}
 										<span className="text-red-500 font-semibold">
-											have not claimed
+											have not reserved
 										</span>{' '}
 										a ticket!
 									</>
@@ -178,19 +182,30 @@ export default function CollectionPage(props: Props) {
 							</p>
 
 							{distance !== -1 &&
-								distance < 150 &&
-								ticketsRemaining > 0 &&
-								!hasTicket && (
-									<button
-										type="button"
-										onClick={async () => attemptTicketClaim()}
-									>
-										You're close enough - Attempt Ticket Claim
-									</button>
-								)}
-						</>
+							withinRange &&
+							ticketsRemaining > 0 &&
+							!hasTicket ? (
+								<button
+									type="button"
+									className="bg-green-500/25 border border-green-500/50 w-full flex justify-between items-center text-left py-2 px-3 rounded-md text-black/75 font-semibold text-sm"
+									onClick={attemptTicketClaim}
+								>
+									<span>Reserve Ticket</span>
+									<HiOutlineTicket className="inline-block" />
+								</button>
+							) : (
+								<button
+									disabled
+									type="button"
+									className="cursor-not-allowed bg-red-500/25 border border-red-500/50 w-full flex justify-between items-center text-left py-2 px-3 rounded-md text-black/75 font-semibold text-sm"
+								>
+									<span>Too far!</span>
+									<HiOutlineTicket className="inline-block" />
+								</button>
+							)}
+						</motion.div>
 					)}
-				</div>
+				</AnimatePresence>
 
 				<GoogleMap
 					key={`gmap-${props.collection.id}`}
