@@ -52,8 +52,6 @@ export default api({
 			mode: 'payment',
 		});
 
-		return {
-			url: session.url,
-		};
+		return session.url;
 	},
 });
