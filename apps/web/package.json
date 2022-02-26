@@ -30,6 +30,7 @@
 	},
 	"devDependencies": {
 		"@types/cookie": "^0.4.1",
+		"@types/googlemaps": "^3.43.3",
 		"@types/ioredis": "^4.28.8",
 		"@types/tailwindcss": "^3.0.9",
 		"autoprefixer": "^10.4.2",

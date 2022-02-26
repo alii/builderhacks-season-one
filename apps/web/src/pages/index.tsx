@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import {Marker} from 'react-google-maps';
 import {GoogleMap} from '../client/components/map';
 
 export default function Home() {
@@ -17,7 +18,14 @@ export default function Home() {
 				</div>
 			</div>
 
-			<GoogleMap />
+			<GoogleMap>
+				<Marker
+					position={{
+						lat: 51.750032,
+						lng: -1.974938,
+					}}
+				/>
+			</GoogleMap>
 		</div>
 	);
 }
