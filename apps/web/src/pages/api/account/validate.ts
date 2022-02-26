@@ -5,6 +5,7 @@ import {redis} from '../../../server/redis';
 import {NextkitException} from 'nextkit';
 import {prisma} from '../../../server/prisma';
 import {snowflake} from '../../../server/snowflake';
+import {createSession} from '../../../server/sessions';
 
 export default api({
 	async POST({req}) {
@@ -33,8 +34,11 @@ export default api({
 			});
 		}
 
+		const token = await createSession(currentUser.id);
+
+		console.log(token);
+
 		return {
-			token: 'yourmother',
 			userId: currentUser.id,
 		};
 	},
