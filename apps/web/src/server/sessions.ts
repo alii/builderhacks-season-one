@@ -1,9 +1,14 @@
 import crypto from 'crypto';
+import dayjs from 'dayjs';
 import {NextApiRequest} from 'next';
 import {NextkitException} from 'nextkit';
 import {redis} from './redis';
 
 export const COOKIE_NAME = 'token';
+
+export function getSessionExpiration() {
+	return dayjs().add(3, 'days');
+}
 
 /**
  * Generates a unique session token
@@ -37,6 +42,12 @@ export async function getSessionFromRequest(req: NextApiRequest) {
 
 export async function createSession(userId: string): Promise<string> {
 	const token = await generateUniqueSessionToken();
-	await redis.set(`token:${token}`, userId);
+	await redis.set(
+		`token:${token}`,
+		userId,
+		'ex',
+		getSessionExpiration().diff() * 1000,
+	);
+
 	return token;
 }
