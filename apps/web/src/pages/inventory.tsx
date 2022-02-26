@@ -2,18 +2,22 @@ import {InferAPIResponse} from 'nextkit';
 import {useCallback, useEffect, useState} from 'react';
 import type TicketAPI from './api/ticket';
 import {fetcher} from '../client/fetcher';
+import {useRouter} from 'next/router';
 
 type TicketResponse = InferAPIResponse<typeof TicketAPI, 'GET'>;
 
 export default function Inventory() {
 	const [tickets, setTickets] = useState<TicketResponse>([]);
+	const router = useRouter();
 
 	const revalidateTickets = useCallback(() => {
 		fetcher<TicketResponse>(`/api/ticket`)
 			.then(data => {
 				setTickets(data);
 			})
-			.catch(() => null);
+			.catch(() => {
+				void router.push('/auth');
+			});
 	}, []);
 
 	useEffect(() => {
