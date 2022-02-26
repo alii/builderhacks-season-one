@@ -5,10 +5,15 @@ import {redis} from '../../../server/redis';
 import {NextkitException} from 'nextkit';
 import {prisma} from '../../../server/prisma';
 import {snowflake} from '../../../server/snowflake';
-import {createSession} from '../../../server/sessions';
+import {
+	COOKIE_NAME,
+	createSession,
+	getSessionExpiration,
+} from '../../../server/sessions';
+import {serialize} from 'cookie';
 
 export default api({
-	async POST({req}) {
+	async POST({req, res}) {
 		const {authCode, phone} = authSchema.parse(req.body);
 
 		// Check the auth code in redis
@@ -36,11 +41,15 @@ export default api({
 
 		const token = await createSession(currentUser.id);
 
-		console.log(token);
-
-		return {
-			userId: currentUser.id,
-		};
+		res.setHeader(
+			'Set-Cookie',
+			serialize(COOKIE_NAME, token, {
+				httpOnly: true,
+				secure: process.env.NODE_ENV !== 'development',
+				path: '/',
+				expires: getSessionExpiration().toDate(),
+			}),
+		);
 	},
 });
 
