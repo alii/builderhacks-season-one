@@ -11,7 +11,7 @@ const apiKey =
 	'AIzaSyAraArYVkLFb2koHks3iO1z8lIe85Zyphk';
 
 export interface Props extends GoogleMapProps {
-	children: ReactNode;
+	children?: ReactNode;
 }
 
 /**
