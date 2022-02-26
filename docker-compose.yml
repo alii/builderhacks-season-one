@@ -9,8 +9,21 @@ services:
   postgres:
     image: postgres
     ports:
-      - 5432:5432
+      - '5432:5432'
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: postgres
+
+  # Support Services
+  localstack:
+    image: localstack/localstack
+    ports: ["4563-4599:4563-4599", "8055:8080"]
+    environment:
+      AWS_DEFAULT_REGION: us-east-1
+      SERVICES: sqs
+      DEBUG: 1
+      AWS_SECRET_ACCESS_KEY: secret
+      AWS_ACCESS_KEY_ID: key
+    volumes:
+      - ./scripts/setup-localstack.sh:/docker-entrypoint-initaws.d/make-sqs.sh
