@@ -11,7 +11,6 @@ export default function CollectionPage(props: Props) {
 	return (
 		<div>
 			<h1>Collection</h1>
-
 			<h2>{props.collection.id}</h2>
 		</div>
 	);
@@ -34,7 +33,7 @@ export const getStaticProps: GetStaticProps<
 	}
 
 	return {
-		revalidate: 120,
+		revalidate: 240,
 		props: {collection},
 	};
 };

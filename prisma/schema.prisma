@@ -8,13 +8,22 @@ datasource db {
 }
 
 model User {
-  address     String       @id
-  collections Collection[]
+  id    String @id
+  email String @unique
+}
+
+model Ticket {
+  id            String     @id
+  title         String
+  collection    Collection @relation(fields: [collection_id], references: [id])
+  collection_id String
 }
 
 model Collection {
-  id              String @id @default(uuid())
-  slug            String @unique
-  creator         User   @relation(fields: [creator_address], references: [address])
-  creator_address String
+  id        String   @id
+  slug      String   @unique @db.VarChar(20)
+  name      String
+  tickets   Ticket[]
+  latitude  Float
+  longitude Float
 }
