@@ -1,5 +1,6 @@
 import {Collection} from '@prisma/client';
 import {GetStaticPaths, GetStaticProps} from 'next';
+import {Marker} from 'react-google-maps';
 import {GoogleMap} from '../client/components/map';
 import {collectionSchema} from '../schemas/collection';
 import {prisma} from '../server/prisma';
@@ -17,7 +18,14 @@ export default function CollectionPage(props: Props) {
 						lat: props.collection.latitude,
 						lng: props.collection.longitude,
 					}}
-				></GoogleMap>
+				>
+					<Marker
+						position={{
+							lat: props.collection.latitude,
+							lng: props.collection.longitude,
+						}}
+					/>
+				</GoogleMap>
 			</div>
 		</div>
 	);

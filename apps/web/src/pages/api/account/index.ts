@@ -6,7 +6,7 @@ import {redis} from '../../../server/redis';
 
 export default api({
 	async POST({req}) {
-		const body = schema.parse(req.body);
+		const body = z.object({phone: userSchema.phoneNumber}).parse(req.body);
 
 		// Send the 2fa text message
 		const authenticationCode = id(6, '0123456789');
@@ -19,8 +19,4 @@ export default api({
 
 		// TODO: send a text message
 	},
-});
-
-const schema = z.object({
-	phone: userSchema.phoneNumber,
 });

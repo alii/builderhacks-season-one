@@ -1,6 +1,4 @@
 import Link from 'next/link';
-import {Marker} from 'react-google-maps';
-import {GoogleMap} from '../client/components/map';
 
 export default function Home() {
 	return (
@@ -10,22 +8,11 @@ export default function Home() {
 
 			<div className="flex space-x-2 items-center">
 				<div>
-					<Link href="/login">Login</Link>
-				</div>
-
-				<div>
-					<Link href="/signup">Sign up</Link>
+					<Link href="/auth">
+						<a className="text-indigo-500">Continue with phone number</a>
+					</Link>
 				</div>
 			</div>
-
-			<GoogleMap>
-				<Marker
-					position={{
-						lat: 51.750032,
-						lng: -1.974938,
-					}}
-				/>
-			</GoogleMap>
 		</div>
 	);
 }

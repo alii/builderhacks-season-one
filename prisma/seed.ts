@@ -11,6 +11,7 @@ const client = new PrismaClient();
 
 async function run() {
 	const userIdPool: string[] = [];
+
 	for (let i = 0; i < 50; i++) {
 		const user = await client.user.create({
 			data: {
@@ -29,7 +30,7 @@ async function run() {
 				id: snowflake(),
 				name: `${faker.name.firstName()} ${faker.name.lastName()}`,
 				image: faker.image.imageUrl(),
-				slug: id(),
+				slug: id(10, 'abcdef1234567890'),
 			},
 		});
 

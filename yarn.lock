@@ -304,6 +304,7 @@ __metadata:
     react: 17.0.2
     react-dom: 17.0.2
     react-google-maps: ^9.4.5
+    react-hot-toast: ^2.2.0
     react-spinners: ^0.11.0
     stripe: ^8.205.0
     superjson: ^1.8.1
@@ -2490,6 +2491,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"goober@npm:^2.1.1":
+  version: 2.1.8
+  resolution: "goober@npm:2.1.8"
+  peerDependencies:
+    csstype: ^3.0.10
+  checksum: c877e854814e29c085c0d3f7879492788ceff9b1a0a0d731bfe22e59a2d206f991c3fb44ad14a32a9c2f396e3280ad6a8e597a95bb2d052c59dd7c25814f1c67
+  languageName: node
+  linkType: hard
+
 "google-maps-infobox@npm:^2.0.0":
   version: 2.0.0
   resolution: "google-maps-infobox@npm:2.0.0"
@@ -3993,6 +4003,18 @@ __metadata:
     react: ^15.0.0 || ^16.0.0
     react-dom: ^15.0.0 || ^16.0.0
   checksum: 478ee354c64b320264ae1c0265a8cd668775dcbce9ba7fb7567d187d87d76c1cd9e14780dc911a59843eeed3fd9fad3d60ffd489499b0ea87158332ba7725379
+  languageName: node
+  linkType: hard
+
+"react-hot-toast@npm:^2.2.0":
+  version: 2.2.0
+  resolution: "react-hot-toast@npm:2.2.0"
+  dependencies:
+    goober: ^2.1.1
+  peerDependencies:
+    react: ">=16"
+    react-dom: ">=16"
+  checksum: bb34ddc8ada14cbd75a37f14d2563412174e23276eb05e9fb23a031b6d8374ca190cefa1940692f4371529ddafeb2d4b8d3e5023187c2851ec8cb247461553ee
   languageName: node
   linkType: hard
 

@@ -36,7 +36,9 @@ export async function getSessionFromRequest(req: NextApiRequest) {
 	return session;
 }
 
-export async function createSession(userId: string): Promise<[string, Date]> {
+export async function createSession(
+	userId: string,
+): Promise<[token: string, expires: Date]> {
 	const token = await generateUniqueSessionToken();
 	const expiration = dayjs().add(3, 'days');
 
