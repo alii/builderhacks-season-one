@@ -13,7 +13,7 @@ export default api({
 		const {authCode, phone} = authSchema.parse(req.body);
 
 		// Check the auth code in redis
-		const redisEntry = await redis.get(`authcode:${phone}`);
+		const redisEntry = await redis.get(`authcode:${phone.number}`);
 		if (!redisEntry || redisEntry.trim() !== authCode.trim()) {
 			throw new NextkitException(422, 'Unable to find that code!');
 		}
@@ -22,7 +22,7 @@ export default api({
 		// If not, create a new user
 		let currentUser = await prisma.user.findFirst({
 			where: {
-				phone_number: phone,
+				phone_number: phone.number,
 			},
 		});
 
@@ -30,7 +30,7 @@ export default api({
 			currentUser = await prisma.user.create({
 				data: {
 					id: snowflake(),
-					phone_number: phone,
+					phone_number: phone.number,
 				},
 			});
 		}

@@ -1,5 +1,6 @@
 import {getMessage, markMessageComplete} from './sqs';
 import {UserGeoLocationMessage} from './types';
+import {processMessage} from './processor';
 
 async function runIteration() {
 	try {
@@ -13,7 +14,8 @@ async function runIteration() {
 		}
 
 		const messageData = JSON.parse(message.Body) as UserGeoLocationMessage;
-		console.log(messageData);
+
+		await processMessage(messageData);
 
 		console.log('All done, cleaning up...');
 		await markMessageComplete(message);

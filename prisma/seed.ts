@@ -6,6 +6,7 @@ import {snowflake} from '@geogig/web/src/server/snowflake';
 import faker from '@faker-js/faker';
 import {id} from 'alistair/id';
 import dayjs from 'dayjs';
+import * as fs from 'fs/promises';
 
 const client = new PrismaClient();
 
@@ -37,15 +38,24 @@ async function run() {
 		artistIdPool.push(artist.id);
 	}
 
+	// Load in town data
+	const townDataJson = await fs.readFile('./prisma/gb.json', 'utf-8');
+	const townData = JSON.parse(townDataJson) as Array<{
+		lat: string;
+		lng: string;
+	}>;
+
 	const collectionIdPool: string[] = [];
-	for (let i = 0; i < 5; i++) {
+	for (let i = 0; i < 20; i++) {
+		const town = townData[Math.floor(Math.random() * townData.length)];
+
 		const collection = await client.collection.create({
 			data: {
 				id: snowflake(),
 				slug: id(),
 				name: faker.company.companyName(),
-				latitude: 51.892321, // 51.892321, -2.076927
-				longitude: -2.076927,
+				latitude: parseFloat(town.lat),
+				longitude: parseFloat(town.lng),
 				releases_at: dayjs().subtract(1, 'hour').toDate(),
 				closes_at: dayjs().add(1, 'day').toDate(),
 				artist_id:
@@ -56,7 +66,7 @@ async function run() {
 		collectionIdPool.push(collection.id);
 	}
 
-	for (let i = 0; i < 20; i++) {
+	for (let i = 0; i < 100; i++) {
 		await client.ticket.create({
 			data: {
 				id: snowflake(),

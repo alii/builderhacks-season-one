@@ -22,5 +22,6 @@ export async function createMessage(payload: UserGeoLocationMessage) {
 		QueueUrl: env.SQS_URL,
 		MessageBody: JSON.stringify(payload),
 		MessageDeduplicationId: randomUUID(),
+		MessageGroupId: randomUUID(),
 	}).promise();
 }

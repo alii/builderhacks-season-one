@@ -27,7 +27,7 @@ async function generateUniqueSessionToken(): Promise<string> {
  * @returns The user's id
  */
 export async function getSessionFromRequest(req: NextApiRequest) {
-	const session = await redis.get(`session:${req.cookies[COOKIE_NAME]}`);
+	const session = await redis.get(`token:${req.cookies[COOKIE_NAME]}`);
 
 	if (!session) {
 		throw new NextkitException(401, 'You are not logged in!');

@@ -28,6 +28,7 @@ export async function processMessage(message: UserGeoLocationMessage) {
 			) = 0
 		LIMIT 1
 	`;
+	console.log(foundTicketRes);
 
 	if (foundTicketRes.length) {
 		const ticketData = foundTicketRes[0];

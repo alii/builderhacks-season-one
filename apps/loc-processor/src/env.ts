@@ -1,4 +1,6 @@
+import dotenv from 'dotenv';
 import {envsafe, str} from 'envsafe';
+dotenv.config({path: './.env.local'});
 
 export const env = envsafe({
 	AWS_REGION: str(),
@@ -7,3 +9,5 @@ export const env = envsafe({
 	SQS_URL: str(),
 	REDIS_URL: str(),
 });
+
+console.log(env);

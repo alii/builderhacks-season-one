@@ -11,11 +11,18 @@ export default api({
 		// Send the 2fa text message
 		const authenticationCode = id(6, '0123456789');
 
+		console.log(body.phone.number);
+
 		// Put this in redis
-		await redis.set(`authcode:${body.phone}`, authenticationCode, 'EX', 120);
+		await redis.set(
+			`authcode:${body.phone.number}`,
+			authenticationCode,
+			'EX',
+			120,
+		);
 
 		// Send the text message
-		console.log(`2FA CODE FOR ${body.phone}: ${authenticationCode}`);
+		console.log(`2FA CODE FOR ${body.phone.number}: ${authenticationCode}`);
 
 		// TODO: send a text message
 	},
