@@ -22,6 +22,7 @@ export default function CollectionPage(props: Props) {
 	const [usrPos, setUsrPos] = useState<null | Pos>(null);
 	const [ticketsRemaining, setTicketsRemaining] = useState(0);
 	const [distance, setDistance] = useState(-1);
+	const [hasTicket, setHasTicket] = useState(false);
 
 	const revalidateTicketsRemaining = useCallback(() => {
 		fetcher<InferAPIResponse<typeof CollectionAPI, 'GET'>>(
@@ -33,6 +34,7 @@ export default function CollectionPage(props: Props) {
 		)
 			.then(data => {
 				setTicketsRemaining(data.remainingTicketCount);
+				setHasTicket(data.hasTicket);
 			})
 			.catch(() => null);
 	}, [props.collection.id]);
@@ -100,7 +102,10 @@ export default function CollectionPage(props: Props) {
 
 	return (
 		<div>
-			<h1>Distance: {distance === -1 ? 'Loading...' : `${distance}m`}</h1>
+			<h1>
+				Distance: {distance === -1 ? 'Loading...' : `${distance}m`} -{' '}
+				{hasTicket ? 'YOU HAVE A TICKET!!!' : 'You do not have a ticket yet :('}
+			</h1>
 			<div className="h-[80vh]">
 				<GoogleMap
 					key={`gmap-${props.collection.id}`}
