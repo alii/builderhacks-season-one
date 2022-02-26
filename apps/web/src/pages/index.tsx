@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import {GoogleMap} from '../client/components/map';
 
 export default function Home() {
 	return (
@@ -15,6 +16,8 @@ export default function Home() {
 					<Link href="/signup">Sign up</Link>
 				</div>
 			</div>
+
+			<GoogleMap />
 		</div>
 	);
 }
