@@ -40,5 +40,6 @@ module.exports = {
 		'@typescript-eslint/indent': 'off',
 
 		'@next/next/no-html-link-for-pages': ['error', 'apps/web/src/pages/'],
+		'@typescript-eslint/ban-types': 'off',
 	},
 };
