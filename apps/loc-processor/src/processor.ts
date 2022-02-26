@@ -21,7 +21,7 @@ export async function processMessage(message: UserGeoLocationMessage) {
 				) AS calculated_distance ON TRUE
 		WHERE user_id IS NULL
 			AND releases_at < ${parsedDate} AND closes_at > ${parsedDate}
-			AND distance < 1
+			AND distance < 0.15
 			AND (
 				SELECT count(*) FROM "Ticket"
 				WHERE user_id = ${message.userId}
