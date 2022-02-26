@@ -1,6 +1,6 @@
 /* eslint-disable no-bitwise */
 
-const SNOWFLAKE_EPOCH = Date.UTC(2022, 2, 26);
+const SNOWFLAKE_EPOCH = Date.UTC(2022, 1, 25);
 
 // (Math.pow(2, 23) - 1) >> 0
 const UNSIGNED_23BIT_MAX = 8388607;

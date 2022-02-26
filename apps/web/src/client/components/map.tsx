@@ -5,9 +5,10 @@ import {Loader} from '@googlemaps/js-api-loader';
 import {useEffect, useRef, useState} from 'react';
 
 const loader = new Loader({
-	apiKey: '',
+	apiKey:
+		process.env.NEXT_PUBLIC_MAPS_API_KEY ??
+		'AIzaSyAraArYVkLFb2koHks3iO1z8lIe85Zyphk',
 	version: 'weekly',
-	libraries: ['places'],
 });
 
 export function useGoogleMaps<T extends HTMLElement = HTMLElement>(
@@ -54,4 +55,23 @@ const render = (status: Status) => {
 
 export function GoogleMaps() {
 	return <Wrapper apiKey="YOUR_API_KEY" render={render} />;
+}
+
+export function Map({
+	center,
+	zoom,
+}: {
+	center: google.maps.LatLngLiteral;
+	zoom: number;
+}) {
+	const ref = useRef<HTMLDivElement>(null);
+
+	useEffect(() => {
+		const map = new google.maps.Map(ref.current, {
+			center,
+			zoom,
+		});
+	});
+
+	return <div ref={ref} />;
 }
