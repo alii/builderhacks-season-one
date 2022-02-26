@@ -6,7 +6,6 @@ import {collectionSchema} from '../schemas/collection';
 import {prisma} from '../server/prisma';
 import {useEffect, useState} from 'react';
 import {fetcher} from '../client/fetcher';
-import Account from './api/account';
 
 interface Props {
 	collection: Collection;
