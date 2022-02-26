@@ -23,6 +23,7 @@ export default api({
 				phone_number: phone,
 			},
 		});
+
 		if (!currentUser) {
 			currentUser = await prisma.user.create({
 				data: {
@@ -32,7 +33,6 @@ export default api({
 			});
 		}
 
-		// TODO: Give the user a token
 		return {
 			token: 'yourmother',
 			userId: currentUser.id,
