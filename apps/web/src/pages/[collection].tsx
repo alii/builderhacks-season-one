@@ -135,7 +135,7 @@ export default function CollectionPage(props: Props) {
 				</GoogleMap>
 			</div>
 			{distance !== -1 && distance < 1000 && ticketsRemaining > 0 && (
-				<button type={'button'} onClick={() => attemptTicketClaim()}>
+				<button type="button" onClick={async () => attemptTicketClaim()}>
 					You're close enough - Attempt Ticket Claim
 				</button>
 			)}
