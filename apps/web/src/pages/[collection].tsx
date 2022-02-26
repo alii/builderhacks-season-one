@@ -17,6 +17,8 @@ import clsx from 'clsx';
 import {motion, AnimatePresence} from 'framer-motion';
 import {humanizeDistanceString} from '../shared/util/distance';
 import {HiOutlineTicket} from 'react-icons/hi';
+import {usePaid} from '../client/hooks/usePaid';
+import {useRouter} from 'next/router';
 
 interface Props {
 	collection: Collection & {
@@ -31,7 +33,8 @@ interface Pos {
 
 export default function CollectionPage(props: Props) {
 	const socket = useMemo(() => io(`http://localhost:8081`), []);
-
+	const paidState = usePaid();
+	const router = useRouter();
 	const [usrPos, setUsrPos] = useState<null | Pos>(null);
 	const [ticketsRemaining, setTicketsRemaining] = useState(0);
 	const [_distance, setDistance] = useState(-1);
@@ -49,6 +52,12 @@ export default function CollectionPage(props: Props) {
 			})
 			.catch(() => null);
 	}, [props.collection.id]);
+
+	useEffect(() => {
+		if (paidState === 'not_paid') {
+			void router.push('/pay');
+		}
+	}, [paidState, router]);
 
 	useEffect(() => {
 		if (typeof window === 'undefined') {
