@@ -6,7 +6,7 @@ SELECT "Ticket".id, distance FROM "Ticket"
     ) AS calculated_distance ON TRUE
 WHERE user_id IS NULL
   AND releases_at < NOW() AND closes_at > NOW()
-  AND distance < 1
+  AND distance < 0.15
   AND (
     SELECT count(*) FROM "Ticket"
     WHERE user_id = :user_id
