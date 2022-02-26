@@ -1,4 +1,4 @@
-import {envsafe, str} from 'envsafe';
+import {envsafe, str, url} from 'envsafe';
 
 export const env = envsafe({
 	REDIS_URL: str({
@@ -19,5 +19,7 @@ export const env = envsafe({
 
 	STRIPE_SECRET_KEY: str(),
 
-	SERVER_BASE_URL: str(),
+	SERVER_BASE_URL: url({
+		devDefault: 'http://localhost:3000',
+	}),
 });
