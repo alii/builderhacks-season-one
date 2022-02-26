@@ -1,41 +1,11 @@
 import {Wrapper, Status} from '@googlemaps/react-wrapper';
 import {Spinner} from './spinner';
 
-import {Loader} from '@googlemaps/js-api-loader';
 import {useEffect, useRef, useState} from 'react';
 
-const loader = new Loader({
-	apiKey:
-		process.env.NEXT_PUBLIC_MAPS_API_KEY ??
-		'AIzaSyAraArYVkLFb2koHks3iO1z8lIe85Zyphk',
-	version: 'weekly',
-});
-
-export function useGoogleMaps<T extends HTMLElement = HTMLElement>(
-	options?: google.maps.MapOptions,
-) {
-	const [map, setMap] = useState<google.maps.Map<T> | null>(null);
-
-	const ref = useRef<T>(null);
-
-	useEffect(() => {
-		if (!ref.current) {
-			return;
-		}
-
-		void loader.loadPromise().then(google => {
-			if (!ref.current) {
-				throw new Error('Tried to attach map to null ref');
-			}
-
-			const map = new google.maps.Map(ref.current, options);
-
-			setMap(map);
-		});
-	}, [options]);
-
-	return [ref, map] as const;
-}
+const apiKey =
+	process.env.NEXT_PUBLIC_MAPS_API_KEY ??
+	'AIzaSyAraArYVkLFb2koHks3iO1z8lIe85Zyphk';
 
 const render = (status: Status) => {
 	switch (status) {
@@ -53,25 +23,32 @@ const render = (status: Status) => {
 	}
 };
 
-export function GoogleMaps() {
-	return <Wrapper apiKey="YOUR_API_KEY" render={render} />;
-}
-
-export function Map({
-	center,
-	zoom,
-}: {
+export interface Props {
 	center: google.maps.LatLngLiteral;
 	zoom: number;
-}) {
+}
+
+export function GoogleMap(props: Props) {
+	return (
+		<Wrapper apiKey={apiKey} render={render}>
+			<Map {...props} />
+		</Wrapper>
+	);
+}
+
+export function Map({center, zoom}: Props) {
 	const ref = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
+		if (!ref.current) {
+			return;
+		}
+
 		const map = new google.maps.Map(ref.current, {
 			center,
 			zoom,
 		});
-	});
+	}, [center, zoom]);
 
-	return <div ref={ref} />;
+	return <div ref={ref} id="bruh" style={{height: 400}} />;
 }
