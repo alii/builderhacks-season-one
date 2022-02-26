@@ -1,9 +1,11 @@
 import {z} from 'zod';
+import parsePhoneNumber, {PhoneNumber} from 'libphonenumber-js';
 
 export const userSchema = {
 	phoneNumber: z
 		.string()
 		.min(1)
-		.regex(/^\+?[1-9]\d{1,14}$/),
+		.transform(str => parsePhoneNumber(str))
+		.refine((value): value is PhoneNumber => Boolean(value)),
 	authCode: z.string().length(6),
 };
