@@ -17,9 +17,7 @@ export default api({
 		// Send the text message
 		console.log(`2FA CODE FOR ${body.phone}: ${authenticationCode}`);
 
-		return {
-			success: true,
-		};
+		// TODO: send a text message
 	},
 });
 
