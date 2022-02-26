@@ -21,6 +21,8 @@ export default api({
 			sentAt: dayjs().toString(),
 		};
 
+		console.log('emitting to sqs', sqsPayload);
+
 		await createMessage(sqsPayload);
 	},
 });
