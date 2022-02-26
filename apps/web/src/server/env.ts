@@ -22,4 +22,6 @@ export const env = envsafe({
 	SERVER_BASE_URL: url({
 		devDefault: 'http://localhost:3000',
 	}),
+
+	STRIPE_WEBHOOK_SIGNATURE: str(),
 });
