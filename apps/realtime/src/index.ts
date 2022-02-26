@@ -44,10 +44,15 @@ io.on('connection', (socket: Socket) => {
 
 		wrapper.userId = userId;
 		SocketPool.push(wrapper);
+
+		socket.emit('authentication-completed', {});
 	});
 
 	socket.on('subscribe-collection', (payload: {collectionId: string}) => {
-		wrapper.subscribedToCollection = payload.collectionId;
+		if (userId) {
+			console.log(`subscribed ${userId} to ${payload.collectionId}`);
+			wrapper.subscribedToCollection = payload.collectionId;
+		}
 	});
 
 	socket.on('disconnect', () => {
