@@ -19,9 +19,14 @@ export async function processMessage(message: UserGeoLocationMessage) {
 				SELECT ( 3959 * acos( cos( radians(latitude) ) * cos( radians( ${message.latitude} ) ) * cos( radians( ${message.longitude} ) - radians(longitude) )
 						+ sin( radians(latitude) ) * sin( radians( ${message.latitude} ) ) ) ) AS distance
 				) AS calculated_distance ON TRUE
-		WHERE user_id IS NOT NULL
+		WHERE user_id IS NULL
 			AND releases_at < ${parsedDate} AND closes_at > ${parsedDate}
 			AND distance < 1
+			AND (
+				SELECT count(*) FROM "Ticket"
+				WHERE user_id = ${message.userId}
+					AND collection_id = C.id
+			) = 0
 		LIMIT 1
 	`;
 
