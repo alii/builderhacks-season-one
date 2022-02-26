@@ -14,7 +14,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/helper-module-imports@npm:^7.12.13":
+"@babel/helper-module-imports@npm:^7.12.13, @babel/helper-module-imports@npm:^7.13.12":
   version: 7.16.7
   resolution: "@babel/helper-module-imports@npm:7.16.7"
   dependencies:
@@ -96,7 +96,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/types@npm:^7.16.7":
+"@babel/types@npm:^7.13.17, @babel/types@npm:^7.16.7":
   version: 7.17.0
   resolution: "@babel/types@npm:7.17.0"
   dependencies:
@@ -285,11 +285,13 @@ __metadata:
     "@heroicons/react": ^1.0.5
     "@prisma/client": 3.10.0
     "@types/cookie": ^0.4.1
+    "@types/googlemaps": ^3.43.3
     "@types/ioredis": ^4.28.8
     "@types/tailwindcss": ^3.0.9
     alistair: ^1.3.1
     autoprefixer: ^10.4.2
     aws-sdk: ^2.1082.0
+    babel-plugin-superjson-next: ^0.4.3
     clsx: ^1.1.1
     cookie: ^0.4.2
     dayjs: ^1.10.7
@@ -303,6 +305,7 @@ __metadata:
     react-google-maps: ^9.4.5
     react-spinners: ^0.11.0
     stripe: ^8.205.0
+    superjson: ^1.8.1
     swr: ^1.2.2
     tailwindcss: ^3.0.23
     zod: ^3.12.0
@@ -550,6 +553,13 @@ __metadata:
   version: 0.4.1
   resolution: "@types/cookie@npm:0.4.1"
   checksum: 3275534ed69a76c68eb1a77d547d75f99fedc80befb75a3d1d03662fb08d697e6f8b1274e12af1a74c6896071b11510631ba891f64d30c78528d0ec45a9c1a18
+  languageName: node
+  linkType: hard
+
+"@types/googlemaps@npm:^3.43.3":
+  version: 3.43.3
+  resolution: "@types/googlemaps@npm:3.43.3"
+  checksum: e08a1fd0c591812359be79f1f5952758a45e2967e117a444c5494eacb03588231cbfeebec0e349063cb2c1dba99226a26378578a6d7a5ea4dab08169e11be77d
   languageName: node
   linkType: hard
 
@@ -1122,6 +1132,20 @@ __metadata:
     cosmiconfig: ^6.0.0
     resolve: ^1.12.0
   checksum: 59b09a21cf3ae1e14186c1b021917d004b49b953824b24953a54c6502da79e8051d4ac31cfd4a0ae7f6ea5ddf1f7edd93df4895dd3c3982a5b2431859c2889ac
+  languageName: node
+  linkType: hard
+
+"babel-plugin-superjson-next@npm:^0.4.3":
+  version: 0.4.3
+  resolution: "babel-plugin-superjson-next@npm:0.4.3"
+  dependencies:
+    "@babel/helper-module-imports": ^7.13.12
+    "@babel/types": ^7.13.17
+    hoist-non-react-statics: ^3.3.2
+  peerDependencies:
+    next: ">=9.0.0"
+    superjson: 1.x
+  checksum: 1d2890da3250b22f6a1dd04ba01d0865a1c708696e1e12a63ff14595700ab12c7a27eae87e387702d126bd12b26cc3d5f748121ece2af974c1b47a64ace3641a
   languageName: node
   linkType: hard
 
@@ -2528,7 +2552,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hoist-non-react-statics@npm:^3.3.1":
+"hoist-non-react-statics@npm:^3.3.1, hoist-non-react-statics@npm:^3.3.2":
   version: 3.3.2
   resolution: "hoist-non-react-statics@npm:3.3.2"
   dependencies:
@@ -3062,6 +3086,13 @@ __metadata:
     p-locate: ^2.0.0
     path-exists: ^3.0.0
   checksum: 02d581edbbbb0fa292e28d96b7de36b5b62c2fa8b5a7e82638ebb33afa74284acf022d3b1e9ae10e3ffb7658fbc49163fcd5e76e7d1baaa7801c3e05a81da755
+  languageName: node
+  linkType: hard
+
+"lodash.clonedeep@npm:^4.5.0":
+  version: 4.5.0
+  resolution: "lodash.clonedeep@npm:4.5.0"
+  checksum: 92c46f094b064e876a23c97f57f81fbffd5d760bf2d8a1c61d85db6d1e488c66b0384c943abee4f6af7debf5ad4e4282e74ff83177c9e63d8ff081a4837c3489
   languageName: node
   linkType: hard
 
@@ -4460,6 +4491,16 @@ __metadata:
   version: 4.0.13
   resolution: "stylis@npm:4.0.13"
   checksum: 8ea7a87028b6383c6a982231c4b5b6150031ce028e0fdaf7b2ace82253d28a8af50cc5a9da8a421d3c7c4441592f393086e332795add672aa4a825f0fe3713a3
+  languageName: node
+  linkType: hard
+
+"superjson@npm:^1.8.1":
+  version: 1.8.1
+  resolution: "superjson@npm:1.8.1"
+  dependencies:
+    debug: ^4.3.1
+    lodash.clonedeep: ^4.5.0
+  checksum: b2663dd4a6e7e99fc095a97e8cc1cba70c071da0542f6599e4ce66101a80c2ca940639c73ecda81008234ad8dac9d888543cd9293c86847af459a7595a5415b9
   languageName: node
   linkType: hard
 
