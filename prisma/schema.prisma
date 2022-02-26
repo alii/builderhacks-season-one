@@ -8,22 +8,25 @@ datasource db {
 }
 
 model User {
-  id    String @id
-  email String @unique
+  id      String   @id
+  email   String   @unique
+  claimed Ticket[]
 }
 
 model Artist {
-
-  name String
+  id          String       @id
+  name        String
+  slug        String
+  image       String
+  collections Collection[]
 }
 
 model Ticket {
   id            String     @id
-  title         String
   collection    Collection @relation(fields: [collection_id], references: [id])
   collection_id String
-  claimee       User? @relation(fields: [user_id], references[id])
-  claimee_id    String?
+  user          User?      @relation(fields: [user_id], references: [id])
+  user_id       String?
 }
 
 model Collection {
@@ -33,4 +36,13 @@ model Collection {
   tickets   Ticket[]
   latitude  Float
   longitude Float
+
+  /// The time that this releases at (e.g. cannot be claimed beforehand)
+  releases_at DateTime?
+
+  /// The time that this collection closes (e.g. cannot be claimed afterwards)
+  closes_at DateTime?
+
+  artist    Artist @relation(fields: [artist_id], references: [id])
+  artist_id String
 }
