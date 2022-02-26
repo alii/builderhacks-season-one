@@ -1,10 +1,9 @@
 import {UserGeoLocationMessage} from './types';
 import {prisma} from './prisma';
 import dayjs from 'dayjs';
+import {redis} from './redis';
 
 export async function processMessage(message: UserGeoLocationMessage) {
-	console.log(message);
-
 	const parsedDate = dayjs(message.sentAt).toDate();
 
 	const foundTicketRes = await prisma.$queryRaw<
@@ -46,5 +45,14 @@ export async function processMessage(message: UserGeoLocationMessage) {
 				user_id: message.userId,
 			},
 		});
+
+		// Publish this to redis
+		await redis.publish(
+			'ticket-claimed',
+			JSON.stringify({
+				userId: message.userId,
+				ticketId: ticketData.id,
+			}),
+		);
 	}
 }
