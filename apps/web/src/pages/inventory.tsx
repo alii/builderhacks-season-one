@@ -25,7 +25,7 @@ export default function Inventory() {
 	}, [revalidateTickets]);
 
 	return (
-		<div>
+		<div className="mx-auto max-w-7xl px-4 py-12">
 			<h1>Your inventory of Tickets</h1>
 			<table className="table-auto w-full">
 				<thead>
