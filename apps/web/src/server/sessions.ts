@@ -6,16 +6,23 @@ import {redis} from './redis';
 
 export const COOKIE_NAME = 'token';
 
+enum TokenPrefix {
+	USER = 'token',
+	REALTIME = 'realtime',
+}
+
 /**
  * Generates a unique session token
  * @returns A string that was generated
  */
-async function generateUniqueSessionToken(): Promise<string> {
+async function generateUniqueSessionToken(
+	prefix: TokenPrefix,
+): Promise<string> {
 	const token = crypto.randomBytes(64).toString('hex');
-	const existing = await redis.get(`token:${token}`);
+	const existing = await redis.get(`${prefix}:${token}`);
 
 	if (typeof existing === 'string') {
-		return generateUniqueSessionToken();
+		return generateUniqueSessionToken(prefix);
 	}
 
 	return token;
@@ -39,18 +46,24 @@ export async function getSessionFromRequest(req: NextApiRequest) {
 export async function createSession(
 	userId: string,
 ): Promise<[token: string, expires: Date]> {
-	const token = await generateUniqueSessionToken();
+	const token = await generateUniqueSessionToken(TokenPrefix.USER);
 	const expiration = dayjs().add(3, 'days');
 
-	await redis.set(`token:${token}`, userId, 'ex', expiration.diff() * 1000);
+	await redis.set(
+		`${TokenPrefix.USER}:${token}`,
+		userId,
+		'ex',
+		expiration.diff() * 1000,
+	);
 
 	return [token, expiration.toDate()];
 }
 
 export async function createRealtimeSession(userId: string): Promise<string> {
-	const token = crypto.randomBytes(64).toString('hex');
+	const token = await generateUniqueSessionToken(TokenPrefix.REALTIME);
+
 	await redis.set(
-		`realtime-token:${token}`,
+		`${TokenPrefix.REALTIME}:${token}`,
 		userId,
 		'EX',
 		dayjs().add(3, 'days').diff() * 1000,
