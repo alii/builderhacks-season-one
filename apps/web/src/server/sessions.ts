@@ -6,10 +6,6 @@ import {redis} from './redis';
 
 export const COOKIE_NAME = 'token';
 
-export function getSessionExpiration() {
-	return dayjs().add(3, 'days');
-}
-
 /**
  * Generates a unique session token
  * @returns A string that was generated
@@ -40,14 +36,11 @@ export async function getSessionFromRequest(req: NextApiRequest) {
 	return session;
 }
 
-export async function createSession(userId: string): Promise<string> {
+export async function createSession(userId: string): Promise<[string, Date]> {
 	const token = await generateUniqueSessionToken();
-	await redis.set(
-		`token:${token}`,
-		userId,
-		'ex',
-		getSessionExpiration().diff() * 1000,
-	);
+	const expiration = dayjs().add(3, 'days');
 
-	return token;
+	await redis.set(`token:${token}`, userId, 'ex', expiration.diff() * 1000);
+
+	return [token, expiration.toDate()];
 }
