@@ -46,3 +46,15 @@ export async function createSession(
 
 	return [token, expiration.toDate()];
 }
+
+export async function createRealtimeSession(userId: string): Promise<string> {
+	const token = crypto.randomBytes(64).toString('hex');
+	await redis.set(
+		`realtime-token:${token}`,
+		userId,
+		'EX',
+		dayjs().add(3, 'days').diff() * 1000,
+	);
+
+	return token;
+}

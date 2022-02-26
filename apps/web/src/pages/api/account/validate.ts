@@ -5,7 +5,11 @@ import {redis} from '../../../server/redis';
 import {NextkitException} from 'nextkit';
 import {prisma} from '../../../server/prisma';
 import {snowflake} from '../../../server/snowflake';
-import {COOKIE_NAME, createSession} from '../../../server/sessions';
+import {
+	COOKIE_NAME,
+	createRealtimeSession,
+	createSession,
+} from '../../../server/sessions';
 import {serialize} from 'cookie';
 
 export default api({
@@ -47,7 +51,12 @@ export default api({
 			}),
 		);
 
-		return currentUser.paid;
+		// Send pack the realtime status
+		const realtimeToken = await createRealtimeSession(currentUser.id);
+		return {
+			paid: currentUser.paid,
+			realtimeToken,
+		};
 	},
 });
 
