@@ -12,11 +12,12 @@ import colors from 'tailwindcss/colors';
 import {io} from 'socket.io-client';
 import {FaCheckCircle} from 'react-icons/fa';
 import {FiXCircle} from 'react-icons/fi';
-import {useThrottle} from 'alistair/hooks';
+import {useThrottle, useToggle} from 'alistair/hooks';
 import clsx from 'clsx';
 import {motion, AnimatePresence} from 'framer-motion';
 import {humanizeDistanceString} from '../shared/util/distance';
 import {HiOutlineTicket} from 'react-icons/hi';
+import {PulseLoader} from 'react-spinners';
 
 interface Props {
 	collection: Collection & {
@@ -34,10 +35,11 @@ export default function CollectionPage(props: Props) {
 
 	const [usrPos, setUsrPos] = useState<null | Pos>(null);
 	const [ticketsRemaining, setTicketsRemaining] = useState(0);
-	const [_distance, setDistance] = useState(-1);
+	const [distance, setDistance] = useState(-1);
 	const [hasTicket, setHasTicket] = useState(false);
+	const [_loadingReservation, loadingReservationControls] = useToggle();
 
-	const distance = useThrottle(_distance, 500);
+	const loadingReservation = useThrottle(_loadingReservation, 1000);
 
 	const revalidateTicketsRemaining = useCallback(() => {
 		fetcher<InferAPIResponse<typeof CollectionAPI, 'GET'>>(
@@ -117,19 +119,20 @@ export default function CollectionPage(props: Props) {
 		setDistance(d);
 	}, [usrPos, props.collection]);
 
-	const attemptTicketClaim = () => {
+	console.log({loadingReservation});
+
+	const attemptTicketClaim = async () => {
 		if (!usrPos) {
 			return;
 		}
 
-		// Emit the user pos to the server
-		console.log('emitting ', usrPos);
+		loadingReservationControls.on();
 
-		void fetcher('/api/location', {
+		await fetcher('/api/location', {
 			method: 'POST',
 			headers: {'Content-Type': 'application/json'},
 			body: JSON.stringify({longitude: usrPos.lng, latitude: usrPos.lat}),
-		});
+		}).finally(loadingReservationControls.off);
 	};
 
 	const withinRange = distance <= 150;
@@ -143,13 +146,15 @@ export default function CollectionPage(props: Props) {
 							initial={{opacity: 0}}
 							animate={{opacity: 1}}
 							className={clsx(
-								'absolute space-y-2 left-12 top-12 z-10 rounded-md p-7',
-								hasTicket
-									? 'bg-gradient-to-r from-green-500 to-green-600'
-									: 'bg-white',
+								'absolute shadow-md space-y-2 left-12 top-12 z-10 rounded-md p-7',
+								{
+									'bg-gradient-to-tr shadow-green-400/25 from-green-500 to-green-400':
+										hasTicket,
+									'bg-white': !hasTicket,
+								},
 							)}
 						>
-							<h1 className="text-4xl font-bold tracking-tighter">
+							<h1 className="text-4xl font-bold tracking-tighter text-black/75">
 								{hasTicket ? (
 									<>
 										<FaCheckCircle className="inline -mt-1" />{' '}
@@ -157,7 +162,6 @@ export default function CollectionPage(props: Props) {
 									</>
 								) : (
 									<>
-										<FiXCircle className="inline -mt-1" />{' '}
 										{distance === -1
 											? 'Loading...'
 											: `${humanizeDistanceString(distance)}`}
@@ -169,10 +173,10 @@ export default function CollectionPage(props: Props) {
 
 							<p>
 								{hasTicket ? (
-									`We've reserved your ticket for ${props.collection.artist.name}`
+									`We've reserved your ticket for ${props.collection.artist.name}.`
 								) : (
 									<>
-										You{' '}
+										<FiXCircle className="inline -mt-1" /> You{' '}
 										<span className="text-red-500 font-semibold">
 											have not reserved
 										</span>{' '}
@@ -185,7 +189,7 @@ export default function CollectionPage(props: Props) {
 								(distance !== -1 && withinRange && ticketsRemaining > 0 ? (
 									<button
 										type="button"
-										className="bg-green-500/25 border border-green-500/50 w-full flex justify-between items-center text-left py-2 px-3 rounded-md text-black/75 font-semibold text-sm"
+										className="bg-amber-500/25 border border-amber-500/50 w-full flex justify-between items-center text-left py-2 px-3 rounded-md text-black/75 font-semibold text-sm"
 										onClick={attemptTicketClaim}
 									>
 										<span>Reserve Ticket</span>
@@ -195,10 +199,16 @@ export default function CollectionPage(props: Props) {
 									<button
 										disabled
 										type="button"
-										className="cursor-not-allowed bg-red-500/25 border border-red-500/50 w-full flex justify-between items-center text-left py-2 px-3 rounded-md text-black/75 font-semibold text-sm"
+										className="relative overflow-hidden cursor-not-allowed bg-red-500/25 border border-red-500/50 w-full flex justify-between items-center text-left py-2 px-3 rounded-md text-black/75 font-semibold text-sm"
 									>
-										<span>Too far!</span>
+										<span>Reserve Ticket</span>
 										<HiOutlineTicket className="inline-block" />
+
+										{loadingReservation && (
+											<span className="absolute flex items-center justify-center inset-0 z-10 bg-red-500">
+												<PulseLoader />
+											</span>
+										)}
 									</button>
 								))}
 						</motion.div>
