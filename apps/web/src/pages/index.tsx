@@ -5,9 +5,10 @@ export default function Home() {
 		<div>
 			<h1>welcome to geogig</h1>
 			<h2>we need a few things from you before we get you started</h2>
+
 			<div className="flex space-x-2 items-center">
 				<div>
-					<Link href="/login">Already have an account?</Link>
+					<Link href="/login">Login</Link>
 				</div>
 
 				<div>
