@@ -3,6 +3,7 @@ import {userSchema} from '../../../schemas/user';
 import {z} from 'zod';
 import {id} from 'alistair/id';
 import {redis} from '../../../server/redis';
+import {sendSMSMessage} from '../../../server/text-messages';
 
 export default api({
 	async POST({req}) {
@@ -24,6 +25,9 @@ export default api({
 		// Send the text message
 		console.log(`2FA CODE FOR ${body.phone.number}: ${authenticationCode}`);
 
-		// TODO: send a text message
+		await sendSMSMessage(
+			body.phone.number,
+			`Your geogig authentication code is: ${authenticationCode}. Expires in 2 minutes.`,
+		);
 	},
 });
