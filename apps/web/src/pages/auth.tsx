@@ -51,7 +51,8 @@ export default function AuthPage() {
 						window.localStorage.setItem('realtime-token', res.realtimeToken);
 
 						await mutate(res.user);
-						void router.push('/home');
+
+						void router.push(res.paid ? '/home' : '/pay');
 					}}
 				>
 					<label>
