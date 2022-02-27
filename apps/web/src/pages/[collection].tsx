@@ -105,6 +105,16 @@ export default function CollectionPage(props: Props) {
 		}
 
 		const watchId = window.navigator.geolocation.watchPosition(pos => {
+			if (process.env.NODE_ENV === 'development') {
+				setUsrPos({
+					// LONDON
+					lat: 51.5032616,
+					lng: -0.157833,
+				});
+
+				return;
+			}
+
 			setUsrPos({
 				lat: pos.coords.latitude,
 				lng: pos.coords.longitude,
