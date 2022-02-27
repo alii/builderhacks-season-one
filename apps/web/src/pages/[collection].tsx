@@ -259,7 +259,7 @@ export default function CollectionPage(props: Props) {
 										<Tooltip
 											theme="light"
 											position="bottom-start"
-											title="Y∏ou are not within 150 metres of this collection"
+											title="You are not within 150 metres of this collection"
 										>
 											<button
 												ref={disabledReservedButtonRef}
