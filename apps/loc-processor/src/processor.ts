@@ -2,6 +2,7 @@ import {UserGeoLocationMessage} from './types';
 import {prisma} from './prisma';
 import dayjs from 'dayjs';
 import {redis} from './redis';
+import {sendSMSMessage} from './text-messages';
 
 export async function processMessage(message: UserGeoLocationMessage) {
 	const parsedDate = dayjs(message.sentAt).toDate();
@@ -11,9 +12,10 @@ export async function processMessage(message: UserGeoLocationMessage) {
 			id: string;
 			distance: number;
 			collection_id: string;
+			artist_id: string;
 		}>
 	>`
-		SELECT "Ticket".id, distance, "Ticket".collection_id FROM "Ticket"
+		SELECT "Ticket".id, distance, "Ticket".collection_id, C.artist_id FROM "Ticket"
 			INNER JOIN "Collection" C on C.id = "Ticket".collection_id
 			LEFT JOIN LATERAL (
 				SELECT ( 3959 * acos( cos( radians(latitude) ) * cos( radians( ${message.latitude} ) ) * cos( radians( ${message.longitude} ) - radians(longitude) )
@@ -56,5 +58,32 @@ export async function processMessage(message: UserGeoLocationMessage) {
 				collectionId: ticketData.collection_id,
 			}),
 		);
+
+		// Send a text message to this person telling them that they've got a drop
+		// Get the user phone number
+		const user = await prisma.user.findFirst({
+			where: {
+				id: message.userId,
+			},
+			select: {
+				phone_number: true,
+			},
+		});
+		if (user) {
+			const artist = await prisma.artist.findFirst({
+				where: {
+					id: ticketData.artist_id,
+				},
+				select: {
+					name: true,
+				},
+			});
+			if (artist) {
+				void sendSMSMessage(
+					user.phone_number,
+					`Nice work! You've just reserved a ticket for ${artist.name}. Check 'My Tickets' in geogig to see next steps!`,
+				);
+			}
+		}
 	}
 }
