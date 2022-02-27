@@ -116,6 +116,17 @@ body {
 	text-decoration: none;
 }
 
+.ticket-image {
+	margin: -18px -18px 14px -18px;
+	border-top-right-radius: 5px;
+	border-top-left-radius: 5px;
+	width: calc(100% + 36px);
+	height: 160px;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
 .barcode {
 	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAF4AAAABCAYAAABXChlMAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuOWwzfk4AAACPSURBVChTXVAJDsMgDOsrVpELiqb+/4c0DgStQ7JMYogNh2gdvg5VfXFCRIZaC6BOtnoNFpvaumNmwb/71Frrm8XvgYkker1/g9WzMOsohaOGNziRs5inDsAn8yEPengTapJ5bmdZ2Yv7VvfPN6AH2NJx7nOWPTf1/78hoqgxhzw3ZqYG1Dr/9ur3y8vMxgNZhcAUnR4xKgAAAABJRU5ErkJggg==);
 	background-repeat: repeat-y;
