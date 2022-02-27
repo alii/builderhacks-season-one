@@ -31,7 +31,7 @@ export default function Home() {
 							collection={collection.name}
 							claimText="HUNT"
 							ticketsRemaining={collection.ticketsRemaining}
-							image={collection.artist.image}
+							image={collection.artist.image + `?rand=${Math.random()}`}
 							activityText={
 								dayjs(collection.releases_at).isBefore(dayjs())
 									? 'ACTIVE NOW!'
