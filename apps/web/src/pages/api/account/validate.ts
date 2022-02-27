@@ -61,6 +61,7 @@ export default api({
 		return {
 			paid: currentUser.paid,
 			realtimeToken,
+			user: currentUser,
 		};
 	},
 });
