@@ -1,27 +1,23 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {AppProps} from 'next/app';
-import useSWR, {SWRConfig} from 'swr';
+import {SWRConfig} from 'swr';
 import {fetcher} from '../client/fetcher';
 import {Toaster} from 'react-hot-toast';
-import {NextkitClientException} from 'nextkit/client';
-import {InferAPIResponse} from 'nextkit';
-import md5 from 'md5';
 
 import Link from 'next/link';
 import {useRouter} from 'next/router';
 import clsx from 'clsx';
 
-import type UserAtMe from './api/users/@me';
-
 import '../client/styles/global.css';
 import 'react-tippy/dist/tippy.css';
 import 'tailwindcss/tailwind.css';
+import {useMe} from '../client/hooks/use-user';
+
+// Paths that do NOT require a user to be logged in
+const PUBLIC_PATHS = ['/', '/auth'];
 
 function Navbar() {
-	const {data: user} = useSWR<
-		InferAPIResponse<typeof UserAtMe, 'GET'>,
-		NextkitClientException
-	>('/api/users/@me');
+	const {data: user} = useMe();
 
 	return (
 		<nav className="h-16 flex items-center px-8 bg-neutral-900 text-white justify-between">
@@ -72,16 +68,33 @@ function NavLink({href, children}: {children: string; href: string}) {
 	);
 }
 
-export default function App({Component, pageProps}: AppProps) {
+function Main({Component, pageProps}: AppProps) {
+	const {data: user, error} = useMe();
+	const router = useRouter();
+
+	useEffect(() => {
+		if (
+			!user &&
+			error?.code === 401 &&
+			!PUBLIC_PATHS.includes(router.pathname)
+		) {
+			void router.push('/auth');
+		}
+	}, [user, error, router]);
+
+	return (
+		<main>
+			<Component {...pageProps} />
+		</main>
+	);
+}
+
+export default function App(props: AppProps) {
 	return (
 		<SWRConfig value={{fetcher}}>
 			<Toaster />
-
 			<Navbar />
-
-			<main>
-				<Component {...pageProps} />
-			</main>
+			<Main {...props} />
 		</SWRConfig>
 	);
 }
