@@ -5,18 +5,23 @@ import type Account from '../pages/api/account';
 import type AccountValidate from '../pages/api/account/validate';
 import toast from 'react-hot-toast';
 import {NextkitClientException} from 'nextkit/client';
+import {useRouter} from 'next/router';
 
 export default function AuthPage() {
 	const [phone, set] = useState('');
 	const [submittedPhone, setSubmittedPhone] = useState(false);
 	const [authCode, setAuthCode] = useState('');
+	const router = useRouter();
 
 	return (
-		<div>
-			<h1>Continue to geogig</h1>
+		<div className="mx-auto max-w-7xl px-4 pt-5">
+			<h1 className="text-center text-4xl font-bold mt-5">
+				Continue to geogig
+			</h1>
 
 			{submittedPhone ? (
 				<form
+					className="flex flex-col"
 					onSubmit={async e => {
 						e.preventDefault();
 
@@ -40,26 +45,28 @@ export default function AuthPage() {
 							console.log('setting local token');
 							window.localStorage.setItem('realtime-token', res.realtimeToken);
 
-							if (!res.paid) {
-								// Trigger payments flow
-							}
+							void router.push('/home');
 						}
 					}}
 				>
 					<label>
 						<span>Enter your auth code</span>
-						<input
-							required
-							value={authCode}
-							type="text"
-							onChange={e => {
-								setAuthCode(e.target.value);
-							}}
-						/>
 					</label>
+					<input
+						required
+						value={authCode}
+						type="text"
+						onChange={e => {
+							setAuthCode(e.target.value);
+						}}
+					/>
+					<button type="submit" className="mt-5">
+						Log me in &rarr;
+					</button>
 				</form>
 			) : (
 				<form
+					className="flex flex-col"
 					onSubmit={async e => {
 						e.preventDefault();
 
@@ -85,16 +92,18 @@ export default function AuthPage() {
 				>
 					<label>
 						<span>Enter your phone number</span>
-
-						<input
-							required
-							value={phone}
-							type="tel"
-							onChange={e => {
-								set(e.target.value);
-							}}
-						/>
 					</label>
+					<input
+						required
+						value={phone}
+						type="tel"
+						onChange={e => {
+							set(e.target.value);
+						}}
+					/>
+					<button type="submit" className="mt-5">
+						Next &rarr;
+					</button>
 				</form>
 			)}
 		</div>
