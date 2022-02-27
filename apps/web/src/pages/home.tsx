@@ -1,16 +1,12 @@
-import {InferAPIResponse} from 'nextkit';
-import type CollectionListAPI from './api/collection';
 import {useEffect} from 'react';
 import {useRouter} from 'next/router';
 import dayjs from 'dayjs';
 import {usePaid} from '../client/hooks/usePaid';
-import useSWR from 'swr';
 import {HashLoader} from 'react-spinners';
-
-type CollectionResponse = InferAPIResponse<typeof CollectionListAPI, 'GET'>;
+import {useMyCollections} from '../client/hooks/use-user';
 
 export default function Home() {
-	const {data: collections} = useSWR<CollectionResponse>('/api/collection');
+	const {data: collections} = useMyCollections();
 
 	const router = useRouter();
 	const paidState = usePaid();

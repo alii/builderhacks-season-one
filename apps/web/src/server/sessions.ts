@@ -6,7 +6,7 @@ import {redis} from './redis';
 
 export const COOKIE_NAME = 'token';
 
-enum TokenPrefix {
+export const enum TokenPrefix {
 	USER = 'token',
 	REALTIME = 'realtime-token',
 }

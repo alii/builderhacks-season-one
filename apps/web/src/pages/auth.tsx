@@ -6,12 +6,15 @@ import type AccountValidate from '../pages/api/account/validate';
 import toast from 'react-hot-toast';
 import {NextkitClientException} from 'nextkit/client';
 import {useRouter} from 'next/router';
+import {useMe} from '../client/hooks/use-user';
 
 export default function AuthPage() {
 	const [phone, set] = useState('');
 	const [submittedPhone, setSubmittedPhone] = useState(false);
 	const [authCode, setAuthCode] = useState('');
 	const router = useRouter();
+
+	const {mutate} = useMe();
 
 	return (
 		<div className="mx-auto max-w-7xl px-4 pt-5">
@@ -41,12 +44,14 @@ export default function AuthPage() {
 							})
 							.catch(() => null);
 
-						if (res) {
-							console.log('setting local token');
-							window.localStorage.setItem('realtime-token', res.realtimeToken);
-
-							void router.push('/home');
+						if (!res) {
+							return;
 						}
+
+						window.localStorage.setItem('realtime-token', res.realtimeToken);
+
+						await mutate(res.user);
+						void router.push('/home');
 					}}
 				>
 					<label>
