@@ -56,6 +56,7 @@ async function run() {
 			latitude: 51.5032616,
 			longitude: -0.1575,
 			releases_at: dayjs().subtract(1, 'hour').toDate(),
+			closes_at: dayjs().add(1, 'day').toDate(),
 			artist_id: artistIdPool[0],
 		},
 	});
