@@ -14,7 +14,7 @@ export function Ticket(props: TicketProps) {
 				<div>
 					{props.image && (
 						<div
-							className={'ticket-image'}
+							className="ticket-image"
 							style={{backgroundImage: `url(${props.image})`}}
 						/>
 					)}
@@ -31,7 +31,9 @@ export function Ticket(props: TicketProps) {
 					{props.activityText && <p>{props.activityText}</p>}
 				</div>
 			</div>
+
 			<div className="ticket-rip" />
+
 			<div className="ticket-bottom">
 				<div className="barcode" />
 				<button type="button" className="buy" onClick={props.onClaimClick}>
