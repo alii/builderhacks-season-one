@@ -6,7 +6,6 @@ import {collectionSchema} from '../schemas/collection';
 import {prisma} from '../server/prisma';
 import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {fetcher} from '../client/fetcher';
-import type CollectionAPI from './api/collection/[id]';
 import {InferAPIResponse} from 'nextkit';
 import colors from 'tailwindcss/colors';
 import {io} from 'socket.io-client';
@@ -22,6 +21,8 @@ import {usePaid} from '../client/hooks/usePaid';
 import {useRouter} from 'next/router';
 import dayjs from 'dayjs';
 import {Tooltip} from 'react-tippy';
+
+import type CollectionAPI from './api/collection/[id]';
 
 interface Props {
 	collection: Collection & {
