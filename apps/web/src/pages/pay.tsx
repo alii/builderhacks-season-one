@@ -56,7 +56,7 @@ export default function Pay() {
 							void handlePay();
 						}}
 					>
-						{loading ? 'Loading...' : 'Pay Now'}
+						{loading ? 'Loading...' : 'Pay Now'} &rarr;
 					</button>
 				</>
 			)}
