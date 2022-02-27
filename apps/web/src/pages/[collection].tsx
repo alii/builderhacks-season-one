@@ -17,9 +17,10 @@ import clsx from 'clsx';
 import {motion, AnimatePresence} from 'framer-motion';
 import {humanizeDistanceString} from '../shared/util/distance';
 import {HiOutlineTicket} from 'react-icons/hi';
-import {PulseLoader} from 'react-spinners';
+import {HashLoader, PulseLoader} from 'react-spinners';
 import {usePaid} from '../client/hooks/usePaid';
 import {useRouter} from 'next/router';
+import dayjs from 'dayjs';
 
 interface Props {
 	collection: Collection & {
@@ -128,8 +129,6 @@ export default function CollectionPage(props: Props) {
 		setDistance(d);
 	}, [usrPos, props.collection]);
 
-	console.log({loadingReservation});
-
 	const attemptTicketClaim = async () => {
 		if (!usrPos) {
 			return;
@@ -146,25 +145,51 @@ export default function CollectionPage(props: Props) {
 
 	const withinRange = distance <= 150;
 
+	const tooLate = Boolean(
+		ticketsRemaining === 0 ||
+			(props.collection.closes_at &&
+				dayjs().isAfter(props.collection.closes_at)),
+	);
+
+	const infoBoxClassname = clsx(
+		'absolute shadow-md space-y-2 left-12 top-12 z-10 rounded-md p-7',
+		{
+			'bg-gradient-to-tr shadow-green-400/25 from-green-500 to-green-400':
+				hasTicket,
+			'bg-white': !hasTicket,
+		},
+	);
+
 	return (
 		<div>
 			<div className="h-[calc(100vh-4rem)] relative">
-				<AnimatePresence>
-					{distance !== -1 && (
+				<AnimatePresence exitBeforeEnter>
+					{distance === -1 ? (
 						<motion.div
+							key="loading"
+							animate={{opacity: 1}}
+							exit={{opacity: 0}}
+							className={infoBoxClassname}
+						>
+							<div className="block h-24 w-24 flex items-center justify-center">
+								<HashLoader />
+							</div>
+						</motion.div>
+					) : (
+						<motion.div
+							key="not-loading"
 							initial={{opacity: 0}}
 							animate={{opacity: 1}}
-							className={clsx(
-								'absolute shadow-md space-y-2 left-12 top-12 z-10 rounded-md p-7',
-								{
-									'bg-gradient-to-tr shadow-green-400/25 from-green-500 to-green-400':
-										hasTicket,
-									'bg-white': !hasTicket,
-								},
-							)}
+							className={infoBoxClassname}
 						>
 							<h1 className="text-4xl font-bold tracking-tighter text-black/75">
-								{hasTicket ? (
+								{tooLate ? (
+									<span>
+										{ticketsRemaining === 0
+											? 'Too late!'
+											: 'The collection has closed!'}
+									</span>
+								) : hasTicket ? (
 									<>
 										<FaCheckCircle className="inline -mt-1" />{' '}
 										{props.collection.artist.name}
@@ -180,21 +205,26 @@ export default function CollectionPage(props: Props) {
 								)}{' '}
 							</h1>
 
-							<p>
-								{hasTicket ? (
-									`We've reserved your ticket for ${props.collection.artist.name}.`
-								) : (
-									<>
-										<FiXCircle className="inline -mt-1" /> You{' '}
-										<span className="text-red-500 font-semibold">
-											have not reserved
-										</span>{' '}
-										a ticket!
-									</>
-								)}
-							</p>
+							{tooLate ? (
+								<p>This collection has already sold out.</p>
+							) : (
+								<p>
+									{hasTicket ? (
+										`We've reserved your ticket for ${props.collection.artist.name}.`
+									) : (
+										<>
+											<FiXCircle className="inline -mt-1" /> You{' '}
+											<span className="text-red-500 font-semibold">
+												have not reserved
+											</span>{' '}
+											a ticket!
+										</>
+									)}
+								</p>
+							)}
 
-							{!hasTicket &&
+							{!tooLate &&
+								!hasTicket &&
 								(distance !== -1 && withinRange && ticketsRemaining > 0 ? (
 									<button
 										type="button"
@@ -227,6 +257,7 @@ export default function CollectionPage(props: Props) {
 				<GoogleMap
 					key={`gmap-${props.collection.id}`}
 					options={{
+						minZoom: 5,
 						maxZoom: 18,
 						scrollwheel: true,
 						panControl: false,

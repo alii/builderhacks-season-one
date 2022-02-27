@@ -5,13 +5,6 @@ export const env = envsafe({
 		desc: 'Redis connection string',
 	}),
 
-	// Not actually needed inside the app,
-	// but useful to force it to exist
-	DATABASE_URL: str({
-		desc: 'Database connection string',
-		devDefault: 'postgres://postgres:postgres@localhost:5432/postgres',
-	}),
-
 	AWS_REGION: str(),
 	AWS_ACCESS_KEY_ID: str(),
 	AWS_SECRET_ACCESS_KEY: str(),
