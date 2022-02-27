@@ -29,8 +29,9 @@ function Navbar() {
 			</h2>
 
 			{user && (
-				<div>
+				<div className="flex space-x-2">
 					<NavLink href="/home">Home</NavLink>
+					<NavLink href="/inventory">My Tickets</NavLink>
 				</div>
 			)}
 		</nav>
@@ -44,9 +45,9 @@ function NavLink({href, children}: {children: string; href: string}) {
 		<Link href={href}>
 			<a
 				className={clsx(
-					'block',
+					'block px-3 py-2 transition-all duration-200 rounded-md',
 					router.asPath === href
-						? 'bg-indigo-500 px-3 py-2 rounded-md shadow-md shadow-indigo-900'
+						? 'bg-gradient-to-tr from-indigo-500/25 to-indigo-500/10 text-indigo-500'
 						: 'text-white',
 				)}
 			>

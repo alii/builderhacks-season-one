@@ -5,11 +5,14 @@ import {fetcher} from '../client/fetcher';
 import {useRouter} from 'next/router';
 import dayjs from 'dayjs';
 import {usePaid} from '../client/hooks/usePaid';
+import useSWR from 'swr';
 
 type CollectionResponse = InferAPIResponse<typeof CollectionListAPI, 'GET'>;
 
 export default function Home() {
 	const [collections, setCollections] = useState<CollectionResponse>([]);
+	const {data: collections} = useSWR<CollectionResponse>('');
+
 	const router = useRouter();
 	const paidState = usePaid();
 
@@ -20,7 +23,7 @@ export default function Home() {
 	}, [paidState, router]);
 
 	const revalidateCollections = useCallback(() => {
-		fetcher<CollectionResponse>(`/api/collection`)
+		fetcher<>(`/api/collection`)
 			.then(data => {
 				setCollections(data);
 			})
