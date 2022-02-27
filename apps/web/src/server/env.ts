@@ -17,4 +17,8 @@ export const env = envsafe({
 	}),
 
 	STRIPE_WEBHOOK_SIGNATURE: str(),
+
+	AWS_SNS_REGION: str(),
+	AWS_SNS_ACCESS_KEY_ID: str(),
+	AWS_SNS_SECRET_ACCESS_KEY: str(),
 });
