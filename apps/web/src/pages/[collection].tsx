@@ -21,6 +21,7 @@ import {HashLoader, PulseLoader} from 'react-spinners';
 import {usePaid} from '../client/hooks/usePaid';
 import {useRouter} from 'next/router';
 import dayjs from 'dayjs';
+import {Tooltip} from 'react-tippy';
 
 interface Props {
 	collection: Collection & {
@@ -39,10 +40,15 @@ export default function CollectionPage(props: Props) {
 	const router = useRouter();
 	const [usrPos, setUsrPos] = useState<null | Pos>(null);
 	const [ticketsRemaining, setTicketsRemaining] = useState(0);
-	const [distance, setDistance] = useState(-1);
 	const [hasTicket, setHasTicket] = useState(false);
+
+	const [_distance, setDistance] = useState(-1);
 	const [_loadingReservation, loadingReservationControls] = useToggle();
 
+	// Throttle values to "slow down" the ui so users can
+	// actually see the changes and have a chance to process
+	// what is on their screen (it's good UX + ratio + L + buildergroop)
+	const distance = useThrottle(_distance, 1000);
 	const loadingReservation = useThrottle(_loadingReservation, 1000);
 
 	const revalidateTicketsRemaining = useCallback(() => {
@@ -171,7 +177,7 @@ export default function CollectionPage(props: Props) {
 							exit={{opacity: 0}}
 							className={infoBoxClassname}
 						>
-							<div className="block h-24 w-24 flex items-center justify-center">
+							<div className="h-24 w-24 flex items-center justify-center">
 								<HashLoader />
 							</div>
 						</motion.div>
@@ -235,20 +241,22 @@ export default function CollectionPage(props: Props) {
 										<HiOutlineTicket className="inline-block" />
 									</button>
 								) : (
-									<button
-										disabled
-										type="button"
-										className="relative overflow-hidden cursor-not-allowed bg-red-500/25 border border-red-500/50 w-full flex justify-between items-center text-left py-2 px-3 rounded-md text-black/75 font-semibold text-sm"
-									>
-										<span>Reserve Ticket</span>
-										<HiOutlineTicket className="inline-block" />
+									<Tooltip title="You are not within 150 metres of this collection">
+										<button
+											disabled
+											type="button"
+											className="relative overflow-hidden cursor-not-allowed bg-red-500/25 border border-red-500/50 w-full flex justify-between items-center text-left py-2 px-3 rounded-md text-black/75 font-semibold text-sm"
+										>
+											<span>Reserve Ticket</span>
+											<HiOutlineTicket className="inline-block" />
 
-										{loadingReservation && (
-											<span className="absolute flex items-center justify-center inset-0 z-10 bg-red-500">
-												<PulseLoader />
-											</span>
-										)}
-									</button>
+											{loadingReservation && (
+												<span className="absolute flex items-center justify-center inset-0 z-10 bg-red-500">
+													<PulseLoader />
+												</span>
+											)}
+										</button>
+									</Tooltip>
 								))}
 						</motion.div>
 					)}

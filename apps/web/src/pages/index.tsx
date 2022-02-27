@@ -24,16 +24,14 @@ export default function Home() {
 					</div>
 
 					<img
-						src={
-							'https://media.discordapp.net/attachments/947139212426244206/947275072018731048/unknown.png?width=1432&height=936'
-						}
-						alt={'example image'}
+						src="https://media.discordapp.net/attachments/947139212426244206/947275072018731048/unknown.png?width=1432&height=936"
+						alt="example image"
 					/>
 
 					<p className="text-center text-gray-400">
 						Made by Scott Hiett & Alistair Smith
 					</p>
-					<a href={'https://github.com/alii/builderhacks-season-one'}>
+					<a href="https://github.com/alii/builderhacks-season-one">
 						<p className="text-center text-indigo-400 pt-1 pb-5">
 							Read the source code on GitHub &rarr;
 						</p>
