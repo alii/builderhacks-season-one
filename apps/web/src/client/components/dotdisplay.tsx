@@ -9,12 +9,13 @@ export function DotDisplay() {
 		}
 
 		let drawing = true;
+		const {current} = container;
 
-		const canvas = container.current.getContext('2d')!;
+		const canvas = current.getContext('2d')!;
 
-		let {width, height} = container.current.getBoundingClientRect();
-		container.current.width = width;
-		container.current.height = height;
+		let {width, height} = current.getBoundingClientRect();
+		current.width = width;
+		current.height = height;
 
 		const DOT_SPACING = 50;
 		const DOT_SIZE = 7;
@@ -43,20 +44,18 @@ export function DotDisplay() {
 		draw();
 
 		function handleResize() {
-			if (!container.current) {
-				return;
-			}
+			width = current.getBoundingClientRect().width;
+			height = current.getBoundingClientRect().height;
 
-			width = container.current.getBoundingClientRect().width;
-			height = container.current.getBoundingClientRect().height;
-			container.current.width = width;
-			container.current.height = height;
+			current.width = width;
+			current.height = height;
 		}
 
 		window.addEventListener('resize', handleResize);
 		return () => {
 			drawing = false;
-			if (container.current) {
+
+			if (current) {
 				window.removeEventListener('resize', handleResize);
 			}
 		};
