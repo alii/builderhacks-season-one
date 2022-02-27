@@ -20,7 +20,7 @@ export default api({
 		const redisEntry = await redis.get(`authcode:${phone.number}`);
 
 		if (!redisEntry || redisEntry.trim() !== authCode.trim()) {
-			throw new NextkitException(422, 'Unable to find that code!');
+			throw new NextkitException(422, 'Invalid or expired code');
 		}
 
 		// Find if a user already exists, and if so, return its id.
