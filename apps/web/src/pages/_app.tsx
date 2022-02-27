@@ -6,13 +6,15 @@ import {Toaster} from 'react-hot-toast';
 import {NextkitClientException} from 'nextkit/client';
 import {InferAPIResponse} from 'nextkit';
 
-import type UserAtMe from './api/users/@me';
-
-import '../client/styles/global.css';
-import 'tailwindcss/tailwind.css';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
 import clsx from 'clsx';
+
+import type UserAtMe from './api/users/@me';
+
+import '../client/styles/global.css';
+import 'react-tippy/dist/tippy.css';
+import 'tailwindcss/tailwind.css';
 
 function Navbar() {
 	const {data: user} = useSWR<
