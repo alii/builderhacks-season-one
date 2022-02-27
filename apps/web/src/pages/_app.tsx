@@ -60,10 +60,10 @@ function NavLink({href, children}: {children: string; href: string}) {
 		<Link href={href}>
 			<a
 				className={clsx(
-					'block px-3 py-2 transition-all duration-200 rounded-md',
+					'block px-3 uppercase text-sm tracking-tighter font-semibold py-2 transition-all duration-200 rounded-md',
 					router.asPath === href
 						? 'bg-gradient-to-tr from-indigo-500/25 to-indigo-500/10 text-indigo-500'
-						: 'text-white',
+						: 'text-neutral-400',
 				)}
 			>
 				{children}
