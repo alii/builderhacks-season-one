@@ -26,3 +26,100 @@ body {
 		-webkit-transform: translate(3px);
 	}
 }
+
+.ticket {
+	width: 255px;
+	filter: drop-shadow(1px 1px 3px rgba(0, 0, 0, 0.3));
+	display: flex;
+	flex-direction: column;
+}
+
+.ticket > .ticket-top {
+	background-color: white;
+	border-top-right-radius: 5px;
+	border-top-left-radius: 5px;
+}
+
+.ticket > .ticket-top > .ticket-deetz {
+	padding-bottom: 10px !important;
+}
+
+.ticket > .ticket-bottom {
+	background-color: white;
+	border-bottom-right-radius: 5px;
+	border-bottom-left-radius: 5px;
+	height: 50px;
+	padding: 10px 18px 18px 18px;
+
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.ticket > .ticket-top > div, .ticket > .ticket-bottom > div {
+    padding: 0 18px;
+}
+
+.ticket > .ticket-top > div:first-child, .ticket > .ticket-bottom > div:first-child {
+	padding-top: 18px;
+}
+
+.ticket > .ticket-top > div:last-child, .ticket > .ticket-bottom > div:last-child {
+	padding-bottom: 18px;
+}
+
+.ticket > .ticket-rip {
+	height: 20px;
+	margin: 0 10px;
+	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAACCAYAAAB7Xa1eAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuOWwzfk4AAAAaSURBVBhXY5g7f97/2XPn/AcCBmSMQ+I/AwB2eyNBlrqzUQAAAABJRU5ErkJggg==);
+	background-size: 4px 2px;
+	background-repeat: repeat-x;
+	background-position: center;
+	position: relative;
+	box-shadow: 0 1px 0 0 #fff, 0 -1px 0 0 #fff;
+	background-color: white;
+}
+
+.ticket > .ticket-rip:before, .ticket > .ticket-rip:after {
+	 content: '';
+	 position: absolute;
+	 width: 30px;
+	 height: 30px;
+	 top: 50%;
+	 transform: translate(-50%, -50%) rotate(45deg);
+	 border: 5px solid transparent;
+	 border-top-color: #fff;
+	 border-right-color: #fff;
+	 border-radius: 100%;
+	 pointer-events:none;
+}
+
+.ticket > .ticket-rip:before {
+	left: -10px;
+}
+
+.ticket > .ticket-rip:after {
+	transform: translate(-50%, -50%) rotate(225deg);
+	right: -40px;
+}
+
+.ticket .buy {
+	display: block;
+	font-size: 12px;
+	font-weight: bold;
+	background-color: #5D9CEC;
+	padding: 0 18px;
+	line-height: 30px;
+	border-radius: 15px;
+	color: #fff;
+	text-decoration: none;
+}
+
+.barcode {
+	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAF4AAAABCAYAAABXChlMAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuOWwzfk4AAACPSURBVChTXVAJDsMgDOsrVpELiqb+/4c0DgStQ7JMYogNh2gdvg5VfXFCRIZaC6BOtnoNFpvaumNmwb/71Frrm8XvgYkker1/g9WzMOsohaOGNziRs5inDsAn8yEPengTapJ5bmdZ2Yv7VvfPN6AH2NJx7nOWPTf1/78hoqgxhzw3ZqYG1Dr/9ur3y8vMxgNZhcAUnR4xKgAAAABJRU5ErkJggg==);
+	background-repeat: repeat-y;
+	min-width: 58px;
+	height: 30px;
+	flex: 1;
+}
