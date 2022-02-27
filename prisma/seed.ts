@@ -1,5 +1,4 @@
 /* eslint-disable no-await-in-loop */
-// eslint-disable no-await-in-loop
 
 import {PrismaClient} from '@prisma/client';
 import {snowflake} from '@geogig/web/src/server/snowflake';
@@ -17,7 +16,7 @@ async function run() {
 		const user = await client.user.create({
 			data: {
 				id: snowflake(),
-				phone_number: faker.phone.phoneNumber(),
+				phone_number: faker.phone.phoneNumber('+447#########'),
 			},
 		});
 
@@ -40,12 +39,30 @@ async function run() {
 
 	// Load in town data
 	const townDataJson = await fs.readFile('./prisma/gb.json', 'utf-8');
+
 	const townData = JSON.parse(townDataJson) as Array<{
 		lat: string;
 		lng: string;
 	}>;
 
 	const collectionIdPool: string[] = [];
+
+	// London collection for doing demos (in development, the location is fixed)
+	const bruh = await client.collection.create({
+		data: {
+			id: snowflake(),
+			slug: id(),
+			name: 'London Collection',
+			latitude: 51.5032616,
+			longitude: -0.1575,
+			releases_at: dayjs().subtract(1, 'hour').toDate(),
+			closes_at: dayjs().add(1, 'day').toDate(),
+			artist_id: artistIdPool[0],
+		},
+	});
+
+	collectionIdPool.push(bruh.id);
+
 	for (let i = 0; i < 20; i++) {
 		const town = townData[Math.floor(Math.random() * townData.length)];
 
@@ -82,5 +99,3 @@ async function run() {
 }
 
 void run();
-
-export {};

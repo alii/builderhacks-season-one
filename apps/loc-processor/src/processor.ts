@@ -34,6 +34,7 @@ export async function processMessage(message: UserGeoLocationMessage) {
 
 	if (foundTicketRes.length) {
 		const ticketData = foundTicketRes[0];
+
 		// They need to be given a ticket, with the ID in foundTicketRes
 		console.log(
 			`Found match for ticket id ${ticketData.id}, user id ${message.userId}, distance ${ticketData.distance}`,
@@ -69,6 +70,7 @@ export async function processMessage(message: UserGeoLocationMessage) {
 				phone_number: true,
 			},
 		});
+
 		if (user) {
 			const artist = await prisma.artist.findFirst({
 				where: {
@@ -78,6 +80,7 @@ export async function processMessage(message: UserGeoLocationMessage) {
 					name: true,
 				},
 			});
+
 			if (artist) {
 				void sendSMSMessage(
 					user.phone_number,

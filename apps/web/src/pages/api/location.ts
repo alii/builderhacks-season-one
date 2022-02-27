@@ -20,6 +20,7 @@ export default api({
 				id: context.userId,
 			},
 		});
+
 		if (!paid) {
 			throw new NextkitException(422, 'You must have paid to do that!');
 		}
@@ -35,6 +36,10 @@ export default api({
 		};
 
 		await createMessage(sqsPayload);
+
+		return {
+			pending: true,
+		};
 	},
 });
 
