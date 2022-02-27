@@ -9,7 +9,7 @@ export default api({
 		}
 
 		// Get the tickets that the user has
-		const tickets = await prisma.ticket.findMany({
+		return prisma.ticket.findMany({
 			where: {
 				user_id: context.userId,
 			},
@@ -21,7 +21,5 @@ export default api({
 				},
 			},
 		});
-
-		return tickets;
 	},
 });
