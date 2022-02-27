@@ -11,9 +11,16 @@ export default api({
 		// Get the current active / future collections
 		const collections = await prisma.collection.findMany({
 			where: {
-				closes_at: {
-					gt: new Date(),
-				},
+				OR: [
+					{
+						closes_at: {
+							gt: new Date(),
+						},
+					},
+					{
+						closes_at: null,
+					},
+				],
 			},
 			include: {
 				artist: true,
