@@ -13,7 +13,7 @@ export default function Inventory() {
 		<div className="mx-auto max-w-7xl px-4 py-12">
 			<h1 className="text-2xl font-bold mb-8">Your inventory of Tickets</h1>
 
-			<div className="flex flex-row gap-5">
+			<div className="flex flex-row gap-5 flex-wrap">
 				{tickets ? (
 					tickets.map(ticket => (
 						<Ticket
