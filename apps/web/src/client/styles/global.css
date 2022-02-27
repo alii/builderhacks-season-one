@@ -57,15 +57,18 @@ body {
 	justify-content: space-between;
 }
 
-.ticket > .ticket-top > div, .ticket > .ticket-bottom > div {
-    padding: 0 18px;
+.ticket > .ticket-top > div,
+.ticket > .ticket-bottom > div {
+	padding: 0 18px;
 }
 
-.ticket > .ticket-top > div:first-child, .ticket > .ticket-bottom > div:first-child {
+.ticket > .ticket-top > div:first-child,
+.ticket > .ticket-bottom > div:first-child {
 	padding-top: 18px;
 }
 
-.ticket > .ticket-top > div:last-child, .ticket > .ticket-bottom > div:last-child {
+.ticket > .ticket-top > div:last-child,
+.ticket > .ticket-bottom > div:last-child {
 	padding-bottom: 18px;
 }
 
@@ -81,18 +84,19 @@ body {
 	background-color: white;
 }
 
-.ticket > .ticket-rip:before, .ticket > .ticket-rip:after {
-	 content: '';
-	 position: absolute;
-	 width: 30px;
-	 height: 30px;
-	 top: 50%;
-	 transform: translate(-50%, -50%) rotate(45deg);
-	 border: 5px solid transparent;
-	 border-top-color: #fff;
-	 border-right-color: #fff;
-	 border-radius: 100%;
-	 pointer-events:none;
+.ticket > .ticket-rip:before,
+.ticket > .ticket-rip:after {
+	content: '';
+	position: absolute;
+	width: 30px;
+	height: 30px;
+	top: 50%;
+	transform: translate(-50%, -50%) rotate(45deg);
+	border: 5px solid transparent;
+	border-top-color: #fff;
+	border-right-color: #fff;
+	border-radius: 100%;
+	pointer-events: none;
 }
 
 .ticket > .ticket-rip:before {
@@ -108,12 +112,12 @@ body {
 	display: block;
 	font-size: 12px;
 	font-weight: bold;
-	background-color: #5D9CEC;
 	padding: 0 18px;
 	line-height: 30px;
 	border-radius: 15px;
 	color: #fff;
 	text-decoration: none;
+	@apply bg-indigo-500;
 }
 
 .barcode {
