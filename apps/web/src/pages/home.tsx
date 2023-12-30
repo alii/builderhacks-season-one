@@ -28,10 +28,12 @@ export default function Home() {
 						artist={collection.artist.name}
 						collection={collection.name}
 						claimText="Hunt"
-						ticketsRemaining={collection.ticketsRemaining}
-						image={collection.artist.image + `?rand=${Math.random()}`}
+						ticketsRemaining={collection.tickets_remaining}
+						image={'https://picsum.photos/200/300?rand=' + Math.random()}
 						activityText={
-							dayjs(collection.releases_at).isBefore(dayjs())
+							collection.tickets_remaining === 0
+								? 'Sold out!'
+								: dayjs(collection.releases_at).isBefore(dayjs())
 								? 'ACTIVE NOW!'
 								: dayjs(collection.releases_at).format('DD/MM/YYYY HH:mm:ss')
 						}

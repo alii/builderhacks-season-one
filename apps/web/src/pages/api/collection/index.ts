@@ -36,8 +36,8 @@ export default api({
 			await Promise.all(
 				collections.map(async coll => ({
 					...coll,
-					hasTicket: coll.tickets.length > 0,
-					ticketsRemaining: await prisma.ticket.count({
+					has_tickets: coll.tickets.length > 0,
+					tickets_remaining: await prisma.ticket.count({
 						where: {
 							collection_id: coll.id,
 							user_id: null,
@@ -45,6 +45,12 @@ export default api({
 					}),
 				})),
 			)
-		).filter(coll => coll.ticketsRemaining > 0);
+		).sort(a => {
+			if (a.tickets_remaining === 0) {
+				return 1;
+			}
+
+			return -1;
+		});
 	},
 });
