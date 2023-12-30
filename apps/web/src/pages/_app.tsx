@@ -22,15 +22,15 @@ function Navbar() {
 	const router = useRouter();
 
 	return (
-		<nav className="h-16 flex items-center px-8 bg-neutral-900 text-white justify-between">
+        <nav className="h-16 flex items-center px-8 bg-neutral-900 text-white justify-between">
 			<div className="space-x-8 flex items-center">
 				<Link href="/">
-					<a>
-						<h2 className="text-3xl uppercase tracking-tighter font-black select-none">
-							geogig.
-						</h2>
-					</a>
-				</Link>
+
+                    <h2 className="text-3xl uppercase tracking-tighter font-black select-none">
+                        geogig.
+                    </h2>
+
+                </Link>
 
 				{user && (
 					<div className="flex space-x-2">
@@ -97,26 +97,26 @@ function Navbar() {
 				</Menu>
 			)}
 		</nav>
-	);
+    );
 }
 
 function NavLink({href, children}: {children: string; href: string}) {
 	const router = useRouter();
 
 	return (
-		<Link href={href}>
-			<a
-				className={clsx(
-					'focus:outline-none ring-2 ring-transparent focus:ring-2 focus:ring-indigo-500 block px-3 uppercase text-sm tracking-tighter font-semibold py-2 transition-all duration-200 rounded-md',
-					router.asPath === href
-						? 'bg-gradient-to-tr from-indigo-500/25 to-indigo-500/10 text-indigo-500'
-						: 'text-neutral-400',
-				)}
-			>
-				{children}
-			</a>
-		</Link>
-	);
+        (<Link
+            href={href}
+            className={clsx(
+                'focus:outline-none ring-2 ring-transparent focus:ring-2 focus:ring-indigo-500 block px-3 uppercase text-sm tracking-tighter font-semibold py-2 transition-all duration-200 rounded-md',
+                router.asPath === href
+                    ? 'bg-gradient-to-tr from-indigo-500/25 to-indigo-500/10 text-indigo-500'
+                    : 'text-neutral-400',
+            )}>
+
+            {children}
+
+        </Link>)
+    );
 }
 
 function Main({Component, pageProps}: AppProps) {

@@ -19,7 +19,7 @@ export default function Home() {
 	}, [router]);
 
 	return (
-		<div className="bg-zinc-800 min-h-[calc(100vh-4rem)]">
+        <div className="bg-zinc-800 min-h-[calc(100vh-4rem)]">
 			<div className="absolute z-0 w-full h-[calc(100vh-4rem)]">
 				<DotDisplay />
 			</div>
@@ -32,10 +32,10 @@ export default function Home() {
 
 					<div className="flex justify-center mb-14">
 						<div>
-							<Link href="/auth">
-								<a className="text-white bg-indigo-600 p-5 rounded-md">
+							<Link href="/auth" className="text-white bg-indigo-600 p-5 rounded-md">
+								
 									Continue with phone number &rarr;
-								</a>
+								
 							</Link>
 						</div>
 					</div>
@@ -56,5 +56,5 @@ export default function Home() {
 				</div>
 			</div>
 		</div>
-	);
+    );
 }
