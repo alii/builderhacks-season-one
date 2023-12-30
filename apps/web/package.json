@@ -2,6 +2,7 @@
 	"name": "@geogig/web",
 	"version": "1.0.0",
 	"private": true,
+	"type": "module",
 	"scripts": {
 		"dev": "next dev",
 		"build": "next build",
@@ -10,13 +11,13 @@
 	"dependencies": {
 		"@headlessui/react": "^1.5.0",
 		"@prisma/client": "^5.7.1",
-		"alistair": "^1.3.1",
+		"alistair": "^1.5.6",
 		"aws-sdk": "^2.1082.0",
 		"clsx": "^1.1.1",
 		"cookie": "^0.4.2",
 		"dayjs": "^1.10.7",
 		"envsafe": "^2.0.3",
-		"framer-motion": "^6.2.8",
+		"framer-motion": "^10.16.16",
 		"ioredis": "^4.28.5",
 		"libphonenumber-js": "^1.9.49",
 		"next": "^14.0.4",
@@ -30,8 +31,8 @@
 		"socket.io-client": "^4.4.1",
 		"stripe": "^8.205.0",
 		"superjson": "^1.8.1",
-		"swr": "^1.2.2",
-		"zod": "^3.12.0"
+		"swr": "^2.2.4",
+		"zod": "^3.22.4"
 	},
 	"devDependencies": {
 		"@tailwindcss/forms": "^0.4.0",
@@ -44,7 +45,8 @@
 		"autoprefixer": "^10.4.2",
 		"babel-plugin-superjson-next": "^0.4.3",
 		"postcss": "^8.4.7",
-		"tailwindcss": "^3.0.23"
+		"tailwindcss": "^3.0.23",
+		"typescript": "^5.3.3"
 	},
 	"packageManager": "yarn@3.1.1"
 }

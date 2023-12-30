@@ -1,18 +1,16 @@
-import React, {Fragment, useEffect} from 'react';
-import {AppProps} from 'next/app';
-import {SWRConfig} from 'swr';
-import {fetcher} from '../client/fetcher';
-import toast, {Toaster} from 'react-hot-toast';
+import 'tailwindcss/tailwind.css';
+import '../client/styles/global.css';
 
+import {Menu, Transition} from '@headlessui/react';
+import clsx from 'clsx';
+import {AppProps} from 'next/app';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
-import clsx from 'clsx';
-
-import '../client/styles/global.css';
-import 'react-tippy/dist/tippy.css';
-import 'tailwindcss/tailwind.css';
+import {Fragment, useEffect} from 'react';
+import toast, {Toaster} from 'react-hot-toast';
+import {SWRConfig} from 'swr';
+import {fetcher} from '../client/fetcher';
 import {useMe} from '../client/hooks/use-user';
-import {Menu, Transition} from '@headlessui/react';
 
 // Paths that do NOT require a user to be logged in
 const PUBLIC_PATHS = ['/', '/auth'];
@@ -22,15 +20,13 @@ function Navbar() {
 	const router = useRouter();
 
 	return (
-        <nav className="h-16 flex items-center px-8 bg-neutral-900 text-white justify-between">
+		<nav className="h-16 flex items-center px-8 bg-neutral-900 text-white justify-between">
 			<div className="space-x-8 flex items-center">
 				<Link href="/">
-
-                    <h2 className="text-3xl uppercase tracking-tighter font-black select-none">
-                        geogig.
-                    </h2>
-
-                </Link>
+					<h2 className="text-3xl uppercase tracking-tighter font-black select-none">
+						geogig.
+					</h2>
+				</Link>
 
 				{user && (
 					<div className="flex space-x-2">
@@ -97,26 +93,25 @@ function Navbar() {
 				</Menu>
 			)}
 		</nav>
-    );
+	);
 }
 
 function NavLink({href, children}: {children: string; href: string}) {
 	const router = useRouter();
 
 	return (
-        (<Link
-            href={href}
-            className={clsx(
-                'focus:outline-none ring-2 ring-transparent focus:ring-2 focus:ring-indigo-500 block px-3 uppercase text-sm tracking-tighter font-semibold py-2 transition-all duration-200 rounded-md',
-                router.asPath === href
-                    ? 'bg-gradient-to-tr from-indigo-500/25 to-indigo-500/10 text-indigo-500'
-                    : 'text-neutral-400',
-            )}>
-
-            {children}
-
-        </Link>)
-    );
+		<Link
+			href={href}
+			className={clsx(
+				'focus:outline-none ring-2 ring-transparent focus:ring-2 focus:ring-indigo-500 block px-3 uppercase text-sm tracking-tighter font-semibold py-2 transition-all duration-200 rounded-md',
+				router.asPath === href
+					? 'bg-gradient-to-tr from-indigo-500/25 to-indigo-500/10 text-indigo-500'
+					: 'text-neutral-400',
+			)}
+		>
+			{children}
+		</Link>
+	);
 }
 
 function Main({Component, pageProps}: AppProps) {

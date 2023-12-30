@@ -193,7 +193,7 @@ export default function CollectionPage(props: Props) {
 	return (
 		<div>
 			<div className="h-[calc(100vh-4rem)] relative">
-				<AnimatePresence exitBeforeEnter>
+				<AnimatePresence mode="wait">
 					{distance === -1 ? (
 						<motion.div
 							key="loading"
