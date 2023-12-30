@@ -3,15 +3,15 @@
 	"version": "1.0.0",
 	"private": true,
 	"packageManager": "yarn@3.1.1",
-	"main": "dist/index.js",
+	"type": "module",
 	"scripts": {
-		"start": "node dist/index.js",
-		"build": "yarn tsc"
+		"start": "tsx src/index.ts"
 	},
 	"dependencies": {
 		"aws-sdk": "^2.1082.0",
 		"envsafe": "^2.0.3",
-		"ioredis": "^4.28.5"
+		"ioredis": "^4.28.5",
+		"tsx": "^4.7.0"
 	},
 	"devDependencies": {
 		"@types/ioredis": "^4.28.8",
