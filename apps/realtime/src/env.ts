@@ -1,6 +1,6 @@
-import dotenv from 'dotenv';
+import 'dotenv/config';
+
 import {envsafe, str} from 'envsafe';
-dotenv.config({path: './.env.local'});
 
 export const env = envsafe({
 	REDIS_URL: str(),

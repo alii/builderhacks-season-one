@@ -1,11 +1,11 @@
 /* eslint-disable no-await-in-loop */
 
+import {faker} from '@faker-js/faker';
 import {PrismaClient} from '@prisma/client';
-import {snowflake} from '@geogig/web/src/server/snowflake';
-import faker from '@faker-js/faker';
 import {id} from 'alistair/id';
 import dayjs from 'dayjs';
 import * as fs from 'fs/promises';
+import {snowflake} from '../apps/web/src/server/snowflake';
 
 const client = new PrismaClient();
 
@@ -16,7 +16,7 @@ async function run() {
 		const user = await client.user.create({
 			data: {
 				id: snowflake(),
-				phone_number: faker.phone.phoneNumber('+447#########'),
+				phone_number: faker.phone.number('+447#########'),
 			},
 		});
 
@@ -70,7 +70,7 @@ async function run() {
 			data: {
 				id: snowflake(),
 				slug: id(),
-				name: faker.company.companyName(),
+				name: faker.company.name(),
 				latitude: parseFloat(town.lat),
 				longitude: parseFloat(town.lng),
 				releases_at: dayjs().subtract(1, 'hour').toDate(),

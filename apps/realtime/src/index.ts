@@ -1,8 +1,8 @@
+import cors from 'cors';
 import express from 'express';
 import http from 'http';
 import {Server, Socket} from 'socket.io';
 import {getRealtimeToken} from './token';
-import cors from 'cors';
 
 const app = express();
 app.use(cors());
@@ -23,6 +23,7 @@ const io = new Server(server, {
 		origin: '*',
 	},
 });
+
 io.on('connection', (socket: Socket) => {
 	let userId: null | string = null;
 	const wrapper: SocketWrapper = {

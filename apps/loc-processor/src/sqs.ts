@@ -3,10 +3,10 @@ import {env} from './env';
 
 const SQS = new aws.SQS({
 	credentials: {
-		accessKeyId: env.AWS_ACCESS_KEY_ID,
-		secretAccessKey: env.AWS_SECRET_ACCESS_KEY,
+		accessKeyId: env.AWS_SQS_ACCESS_KEY_ID,
+		secretAccessKey: env.AWS_SQS_SECRET_ACCESS_KEY,
 	},
-	region: env.AWS_REGION,
+	region: env.AWS_SQS_REGION,
 });
 
 export async function getMessage(): Promise<aws.SQS.Message> {

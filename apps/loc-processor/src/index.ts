@@ -1,8 +1,8 @@
+import {processMessage} from './processor';
 import {getMessage, markMessageComplete} from './sqs';
 import {UserGeoLocationMessage} from './types';
-import {processMessage} from './processor';
 
-async function runIteration() {
+async function runIteration(): Promise<void> {
 	try {
 		console.log('Finding message...');
 

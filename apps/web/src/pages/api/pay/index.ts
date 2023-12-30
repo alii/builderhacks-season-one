@@ -1,8 +1,8 @@
 import {NextkitException} from 'nextkit';
 import {api} from '../../../server/api';
+import {env} from '../../../server/env';
 import {prisma} from '../../../server/prisma';
 import {stripe} from '../../../server/stripe';
-import {env} from '../../../server/env';
 
 export default api({
 	async POST({context}) {
@@ -37,12 +37,12 @@ export default api({
 							images: [
 								'https://media.discordapp.net/attachments/419181346414657561/947256295008911390/IMG_7106.JPG?width=702&height=936',
 							],
-							name: 'Geogig access',
+							name: 'geogig access',
 							description:
-								'Gain access to Geogig. The money you pay will be used to purchase the concert tickets.',
+								'Gain access to geogig. The money you pay will be used to purchase the concert tickets.',
 						},
-						unit_amount: 500, // $5 USD
-						currency: 'USD',
+						unit_amount: 500, // £5 GBP
+						currency: 'GBP',
 					},
 				},
 			],
@@ -65,10 +65,13 @@ export default api({
 				paid: true,
 				id: context.userId,
 			},
+			select: {
+				id: true,
+			},
 		});
 
 		return {
-			paid: Boolean(paid),
+			paid: paid !== null,
 		};
 	},
 });

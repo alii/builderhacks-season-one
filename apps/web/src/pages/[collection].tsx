@@ -1,26 +1,25 @@
 import {Artist, Collection} from '@prisma/client';
-import {GetStaticPaths, GetStaticProps} from 'next';
-import {Circle, Marker} from 'react-google-maps';
-import {GoogleMap} from '../client/components/map';
-import {collectionSchema} from '../schemas/collection';
-import {prisma} from '../server/prisma';
-import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import {fetcher} from '../client/fetcher';
-import {InferAPIResponse} from 'nextkit';
-import colors from 'tailwindcss/colors';
-import {io} from 'socket.io-client';
-import {FaCheckCircle} from 'react-icons/fa';
-import {FiXCircle} from 'react-icons/fi';
 import {useThrottle, useToggle} from 'alistair/hooks';
 import clsx from 'clsx';
-import {motion, AnimatePresence} from 'framer-motion';
-import {humanizeDistanceString} from '../shared/util/distance';
+import dayjs from 'dayjs';
+import {AnimatePresence, motion} from 'framer-motion';
+import {GetStaticPaths, GetStaticProps} from 'next';
+import {useRouter} from 'next/router';
+import {InferAPIResponse} from 'nextkit';
+import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import {Circle, Marker} from 'react-google-maps';
+import {FaCheckCircle} from 'react-icons/fa';
+import {FiXCircle} from 'react-icons/fi';
 import {HiOutlineTicket} from 'react-icons/hi';
 import {HashLoader, PulseLoader} from 'react-spinners';
+import {io} from 'socket.io-client';
+import colors from 'tailwindcss/colors';
+import {GoogleMap} from '../client/components/map';
+import {fetcher} from '../client/fetcher';
 import {usePaid} from '../client/hooks/usePaid';
-import {useRouter} from 'next/router';
-import dayjs from 'dayjs';
-import {Tooltip} from 'react-tippy';
+import {collectionSchema} from '../schemas/collection';
+import {prisma} from '../server/prisma';
+import {humanizeDistanceString} from '../shared/util/distance';
 
 import type CollectionAPI from './api/collection/[id]';
 
@@ -267,27 +266,22 @@ export default function CollectionPage(props: Props) {
 									</button>
 								) : (
 									<div>
-										<Tooltip
-											theme="light"
-											position="bottom-start"
+										<button
 											title="You are not within 150 metres of this collection"
+											ref={disabledReservedButtonRef}
+											type="button"
+											className="relative overflow-hidden cursor-not-allowed bg-red-500/25 border border-red-500/50 w-full flex justify-between items-center text-left py-2 px-3 rounded-md text-black/75 font-semibold text-sm"
+											onClick={shake}
 										>
-											<button
-												ref={disabledReservedButtonRef}
-												type="button"
-												className="relative overflow-hidden cursor-not-allowed bg-red-500/25 border border-red-500/50 w-full flex justify-between items-center text-left py-2 px-3 rounded-md text-black/75 font-semibold text-sm"
-												onClick={shake}
-											>
-												<span>Reserve Ticket</span>
-												<HiOutlineTicket className="inline-block" />
+											<span>Reserve Ticket</span>
+											<HiOutlineTicket className="inline-block" />
 
-												{loadingReservation && (
-													<span className="absolute flex items-center justify-center inset-0 z-10 bg-red-500">
-														<PulseLoader />
-													</span>
-												)}
-											</button>
-										</Tooltip>
+											{loadingReservation && (
+												<span className="absolute flex items-center justify-center inset-0 z-10 bg-red-500">
+													<PulseLoader />
+												</span>
+											)}
+										</button>
 									</div>
 								))}
 						</motion.div>

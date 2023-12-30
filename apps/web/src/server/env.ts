@@ -5,9 +5,9 @@ export const env = envsafe({
 		desc: 'Redis connection string',
 	}),
 
-	AWS_REGION: str(),
-	AWS_ACCESS_KEY_ID: str(),
-	AWS_SECRET_ACCESS_KEY: str(),
+	AWS_SQS_REGION: str(),
+	AWS_SQS_ACCESS_KEY_ID: str(),
+	AWS_SQS_SECRET_ACCESS_KEY: str(),
 	SQS_URL: str(),
 
 	STRIPE_SECRET_KEY: str(),

@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"module": "commonjs",
+		"module": "ESNext",
 		"target": "es2020",
 		"sourceMap": true,
 		"strict": true,
@@ -9,9 +9,9 @@
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true,
 		"esModuleInterop": true,
-		"moduleResolution": "node",
+		"moduleResolution": "Bundler",
 		"resolveJsonModule": true,
 		"isolatedModules": true
 	},
-	"exclude": ["node_modules"],
+	"exclude": ["node_modules"]
 }
