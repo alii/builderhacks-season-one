@@ -1,12 +1,12 @@
+import {useRouter} from 'next/router';
 import {InferAPIResponse} from 'nextkit';
-import {useState} from 'react';
+import {NextkitClientException} from 'nextkit/client';
+import {useEffect, useState} from 'react';
+import toast from 'react-hot-toast';
 import {fetcher} from '../client/fetcher';
+import {useMe} from '../client/hooks/use-user';
 import type Account from '../pages/api/account';
 import type AccountValidate from '../pages/api/account/validate';
-import toast from 'react-hot-toast';
-import {NextkitClientException} from 'nextkit/client';
-import {useRouter} from 'next/router';
-import {useMe} from '../client/hooks/use-user';
 
 export default function AuthPage() {
 	const [phone, set] = useState('');
@@ -14,7 +14,13 @@ export default function AuthPage() {
 	const [authCode, setAuthCode] = useState('');
 	const router = useRouter();
 
-	const {mutate} = useMe();
+	const {mutate, data} = useMe();
+
+	useEffect(() => {
+		if (data) {
+			void router.push('/home');
+		}
+	}, [data, router]);
 
 	return (
 		<div className="mx-auto max-w-7xl px-4 pt-5">

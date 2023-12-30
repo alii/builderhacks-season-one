@@ -1,10 +1,10 @@
+import {PropsWithChildren, ReactNode} from 'react';
 import {
-	withScriptjs,
-	withGoogleMap,
 	GoogleMap as GMap,
 	GoogleMapProps,
+	withGoogleMap,
+	withScriptjs,
 } from 'react-google-maps';
-import React, {ReactNode} from 'react';
 
 const apiKey =
 	process.env.NEXT_PUBLIC_MAPS_API_KEY ??
@@ -14,11 +14,8 @@ export interface Props extends GoogleMapProps {
 	children?: ReactNode;
 }
 
-/**
- * @internal
- */
 export const ComposableGoogleMap = withScriptjs(
-	withGoogleMap<Props>(props => (
+	withGoogleMap<Props>((props: PropsWithChildren<{options?: {}}>) => (
 		<GMap
 			defaultZoom={5}
 			defaultCenter={{lat: -34.397, lng: 150.644}}
@@ -315,9 +312,7 @@ export const ComposableGoogleMap = withScriptjs(
 					},
 				],
 			}}
-		>
-			{props.children}
-		</GMap>
+		/>
 	)),
 );
 

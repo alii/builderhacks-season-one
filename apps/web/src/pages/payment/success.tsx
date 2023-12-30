@@ -1,6 +1,6 @@
 import {useRouter} from 'next/router';
-import {usePaid} from '../../client/hooks/usePaid';
 import {useEffect} from 'react';
+import {usePaid} from '../../client/hooks/usePaid';
 
 export default function PaymentSuccess() {
 	const paid = usePaid({

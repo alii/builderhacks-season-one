@@ -1,9 +1,9 @@
-import {useEffect} from 'react';
-import {useRouter} from 'next/router';
 import dayjs from 'dayjs';
-import {usePaid} from '../client/hooks/usePaid';
-import {useMyCollections} from '../client/hooks/use-user';
+import {useRouter} from 'next/router';
+import {useEffect} from 'react';
 import {Ticket} from '../client/components/ticket';
+import {useMyCollections} from '../client/hooks/use-user';
+import {usePaid} from '../client/hooks/usePaid';
 
 export default function Home() {
 	const {data: collections} = useMyCollections();
@@ -27,7 +27,7 @@ export default function Home() {
 						key={`collection-${collection.id}`}
 						artist={collection.artist.name}
 						collection={collection.name}
-						claimText="HUNT"
+						claimText="Hunt"
 						ticketsRemaining={collection.ticketsRemaining}
 						image={collection.artist.image + `?rand=${Math.random()}`}
 						activityText={

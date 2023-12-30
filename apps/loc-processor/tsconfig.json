@@ -1,8 +1,10 @@
 {
-	"extends": "../../tsconfig.json",
 	"compilerOptions": {
-		"sourceRoot": "src",
-		"outDir": "dist"
+		"moduleResolution": "NodeNext",
+		"module": "NodeNext",
+		"skipLibCheck": true,
+		"noEmit": true,
+		"target": "ESNext"
 	},
 	"include": ["./src/**/*.ts"]
 }

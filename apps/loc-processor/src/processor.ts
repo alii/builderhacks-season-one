@@ -1,8 +1,8 @@
-import {UserGeoLocationMessage} from './types';
-import {prisma} from './prisma';
 import dayjs from 'dayjs';
+import {prisma} from './prisma';
 import {redis} from './redis';
 import {sendSMSMessage} from './text-messages';
+import {UserGeoLocationMessage} from './types';
 
 export async function processMessage(message: UserGeoLocationMessage) {
 	const parsedDate = dayjs(message.sentAt).toDate();

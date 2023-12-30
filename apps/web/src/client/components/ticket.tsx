@@ -11,7 +11,7 @@ export function Ticket(props: TicketProps) {
 	return (
 		<div className="ticket">
 			<div className="ticket-top">
-				<div>
+				<div aria-hidden>
 					{props.image && (
 						<div
 							className="ticket-image"
@@ -36,8 +36,12 @@ export function Ticket(props: TicketProps) {
 
 			<div className="ticket-bottom">
 				<div className="barcode" />
-				<button type="button" className="buy" onClick={props.onClaimClick}>
-					{props.claimText ?? 'CLAIM'}
+				<button
+					type="button"
+					className="buy uppercase"
+					onClick={props.onClaimClick}
+				>
+					{props.claimText ?? 'View'}
 				</button>
 			</div>
 		</div>
