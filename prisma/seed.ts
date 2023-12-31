@@ -52,7 +52,7 @@ async function run() {
 		data: {
 			id: snowflake(),
 			slug: id(),
-			name: 'London Collection',
+			name: 'Eras Tour',
 			latitude: 51.5032616,
 			longitude: -0.1575,
 			releases_at: dayjs().subtract(1, 'hour').toDate(),

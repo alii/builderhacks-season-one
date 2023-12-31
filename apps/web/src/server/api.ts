@@ -1,5 +1,5 @@
 import createAPI from 'nextkit';
-import {getSessionFromRequest} from './sessions';
+import { getSessionFromRequest } from './sessions';
 
 export const api = createAPI({
 	async onError(req, res, error) {

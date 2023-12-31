@@ -1,6 +1,6 @@
-import {NextkitException} from 'nextkit';
-import {api} from '../../server/api';
-import {prisma} from '../../server/prisma';
+import { NextkitException } from 'nextkit';
+import { api } from '../../server/api';
+import { prisma } from '../../server/prisma';
 
 export default api({
 	async GET({context}) {

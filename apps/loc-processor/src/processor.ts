@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import {setTimeout} from 'timers/promises';
 import {prisma} from './prisma';
 import {redis} from './redis';
 import {sendSMSMessage} from './text-messages';
@@ -49,6 +50,8 @@ export async function processMessage(message: UserGeoLocationMessage) {
 				user_id: message.userId,
 			},
 		});
+
+		await setTimeout(5000);
 
 		// Publish this to redis
 		await redis.publish(
